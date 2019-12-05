@@ -14,10 +14,10 @@ import java.net.MalformedURLException;
 //@EnableHystrixDashboard
 //@EnableDiscoveryClient
 //@EnableFeignClients
-@EnableEurekaClient
 //@EnableHystrix
 //@EnableZuulProxy
 @EnableWebFlux
+@EnableEurekaClient
 @SpringBootApplication(scanBasePackages = "ccait.ccweb")
 public class Application {
 

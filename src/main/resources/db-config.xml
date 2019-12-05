@@ -7,16 +7,16 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://47.106.69.253:3306/workerlib?serverTimezone=Asia/Shanghai&amp;useSSL=false&amp;connectTimeout=60000&amp;socketTimeout=60000&amp;autoReconnect=true" />
-                <property name="username" value="zhgd" />
-                <property name="password" value="hujiang_zhgd" />
+                <property name="url" value="jdbc:mysql://47.106.69.253:3306/workerlib2?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;serverTimezone=CTT&amp;noAccessToProcedureBodies=true" />
+                <property name="username" value="root" />
+                <property name="password" value="Hujiang666" />
             </dataSource>
         </environment>
         <environment id="mssql" classScope="public">
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-                <property name="url" value="jdbc:sqlserver://127.0.0.1:1433;Database=workerlib" />
+                <property name="url" value="jdbc:sqlserver://127.0.0.1:1433;Database=ccait" />
                 <property name="username" value="sa" />
                 <property name="password" value="123456" />
             </dataSource>
@@ -25,7 +25,7 @@
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="org.postgresql.Driver"/>
-                <property name="url" value="jdbc:postgresql://127.0.0.1:5432/workerlib"/>
+                <property name="url" value="jdbc:postgresql://127.0.0.1:5432/ccait"/>
                 <property name="username" value="postgres"/>
                 <property name="password" value="123456"/>
             </dataSource>
@@ -43,7 +43,7 @@
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="org.sqlite.JDBC" />
-                <property name="url" value="jdbc:sqlite:workerlib.db" />
+                <property name="url" value="jdbc:sqlite:ccait.db" />
                 <property name="username" value="" />
                 <property name="password" value="" />
             </dataSource>
@@ -51,7 +51,7 @@
         <environment id="derby" classScope="public">
             <dataSource type="POOLED">
                 <property name="driver" value="org.apache.derby.jdbc.ClientDriver" />
-                <property name="url" value="jdbc:derby://localhost:8093/workerlib" />
+                <property name="url" value="jdbc:derby://localhost:8093/ccait" />
                 <property name="username" value="root" />
                 <property name="password" value="123456" />
             </dataSource>
@@ -59,7 +59,7 @@
         <environment id="hadoop" classScope="public">
             <dataSource type="POOLED">
                 <property name="driver" value="org.apache.hive.jdbc.HiveDriver" />
-                <property name="url" value="jdbc:hive2://localhost:8093/workerlib" />
+                <property name="url" value="jdbc:hive2://localhost:8093/ccait" />
                 <property name="username" value="username" />
                 <property name="password" value="123456" />
             </dataSource>
