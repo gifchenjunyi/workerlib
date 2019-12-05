@@ -1,8 +1,8 @@
-spring:
-  application:
-    name: workerlib
-  cloud:
-    config:
+spring:  
+  application: 
+    name: ccait.ccweb
+  cloud: 
+    config: 
       label: master
       profile: dev
       uri: http://localhost:8888/
