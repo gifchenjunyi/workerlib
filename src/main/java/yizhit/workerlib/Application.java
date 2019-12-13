@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 //@EnableZuulProxy
 @EnableWebFlux
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages = "ccait.ccweb")
+@SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib"})
 public class Application {
 
     private static final Logger log = LogManager.getLogger( Application.class );
