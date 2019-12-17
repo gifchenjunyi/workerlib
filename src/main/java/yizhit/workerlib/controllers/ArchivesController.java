@@ -1,4 +1,4 @@
-package yizhit.workerlib.contller;
+package yizhit.workerlib.controllers;
 
 import ccait.ccweb.annotation.AccessCtrl;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import yizhit.workerlib.timer.SelectQuartzArvhivesInfo;
 
 @RestController
-public class ArchivesContller {
+public class ArchivesController {
 
     /**
      * 同步工程下的人员信息
