@@ -49,8 +49,8 @@ public class Application {
         //SelectQuartzUnitrInfo selectQuartzUnitrInfo = new SelectQuartzUnitrInfo();
         //selectQuartzUnitrInfo.batchInsertUnitrInfo();
         SelectQuartzArvhivesInfo selectQuartzArvhivesInfo = new SelectQuartzArvhivesInfo();
-        //selectQuartzArvhivesInfo.batchInsertArvhivesInfo();
-        selectQuartzArvhivesInfo.updateArchivesPhoto();
+        selectQuartzArvhivesInfo.batchInsertArvhivesInfo();
+        //selectQuartzArvhivesInfo.updateArchivesPhoto();
         //SelectQuartzCheckWorkceInfo selectQuartzCheckWorkceInfo= new SelectQuartzCheckWorkceInfo();
         //selectQuartzCheckWorkceInfo.batchInsertCheckWorkceInfo();
         System.out.println("Workerlib has been started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

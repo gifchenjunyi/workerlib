@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
+import org.quartz.DisallowConcurrentExecution;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+@DisallowConcurrentExecution
 public class SelectQuartzAllUserInfo {
 
     public void batchInsertArchivesInfo(){

@@ -20,7 +20,7 @@
         <property name="jobDetail" ref="springQtzProjectInfofMethod"></property>
 
         <!-- cron表达式，执行时间  每5分钟执行一次 -->
-        <property name="cronExpression" value="0 */2 * * * ?"></property>
+        <property name="cronExpression" value="0 */5 * * * ?"></property>
     </bean>
 
 
@@ -40,7 +40,7 @@
         <property name="jobDetail" ref="springQtzAllUserInfofMethod"></property>
 
         <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */2 * * * ?"></property>
+        <property name="cronExpression" value="0 */6 * * * ?"></property>
     </bean>
 
 
@@ -59,8 +59,8 @@
         <!-- UnitInfofDetail -->
         <property name="jobDetail" ref="springQtzUnitInfoMethod"></property>
 
-        <!-- cron表达式，执行时间  每8分钟执行一次 -->
-        <property name="cronExpression" value="0 */2 * * * ?"></property>
+        <!-- cron表达式，执行时间  每5分钟执行一次 -->
+        <property name="cronExpression" value="0 */5 * * * ?"></property>
     </bean>
 
 
@@ -80,8 +80,8 @@
         <!-- ArvhivesInfoDetail -->
         <property name="jobDetail" ref="springQtzmyArvhivesInfoMethod"></property>
 
-        <!-- cron表达式，执行时间  每8分钟执行一次 -->
-        <property name="cronExpression" value="0 */1 * * * ?"></property>
+        <!-- cron表达式，执行时间  每6分钟执行一次 -->
+        <property name="cronExpression" value="0 */6 * * * ?"></property>
     </bean>
 
 
@@ -91,10 +91,10 @@
         <property name="triggers">
             <list>
                  <!--此处指的是上面定时的方法-->
-                <ref bean="cronTrigger1"></ref>
-                <ref bean="cronTrigger2"></ref>
-                <ref bean="cronTrigger3"></ref>
-                <ref bean="cronTrigger4"></ref>
+                <!--<ref bean="cronTrigger1"></ref>-->
+                <!--<ref bean="cronTrigger2"></ref>-->
+                <!--<ref bean="cronTrigger3"></ref>-->
+                <!--<ref bean="cronTrigger4"></ref>-->
             </list>
         </property>
 

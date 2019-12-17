@@ -4,7 +4,9 @@ import ccait.ccweb.utils.FastJsonUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
+import entity.query.annotation.Fieldname;
 import entity.tool.util.RequestUtils;
+import org.quartz.DisallowConcurrentExecution;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
@@ -17,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
+@DisallowConcurrentExecution
 public class SelectQuartzArvhivesInfo {
     public void batchInsertArvhivesInfo(){
         // 数据库数据
@@ -88,12 +92,17 @@ public class SelectQuartzArvhivesInfo {
                                 ArchivesInfo archivesInfo = new ArchivesInfo();
                                 archivesInfo.setUserid(info.getUserid());
                                 archivesInfo.setCwrPrjid(projectInfoitem.getEafId());
-                                ArchivesInfo js = archivesInfo.where("archives_id=#{userid}").first();
+                                ArchivesInfo js = archivesInfo.where("[archives_id]=#{userid}").first();
                                 if (js == null ){
                                     Integer i = info.insert();
                                 }else if ("结束".equals(info.getCwrUserStatus())){
                                     info.setLeave(2);
-                                    archivesInfo.where("archives_id=#{userid}").update("cwrUserStatus=#{cwrUserStatus}");
+                                    archivesInfo.where("[archives_id]=#{userid}").update("[cwrUserStatus]=#{cwrUserStatus},[project_id]=#{cwrPrjid},[unit_id]=#{cwrComid}," +
+                                                                                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                                                                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
+                                                                                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
+                                                                                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
+                                                                                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn},[cwrUserOut]=#{cwrUserOut}");
                                 }
                             }
                         } catch (Exception e) {

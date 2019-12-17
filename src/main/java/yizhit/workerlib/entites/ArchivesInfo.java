@@ -33,6 +33,11 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     @Fieldname("id_number")
     private String cwrIdnum;        //证件号码
 
+    private String CwrWorkClass;    //工种编号
+
+    @Fieldname("work_type")
+    private String CwrWorkName;     //工种名称
+
     @Fieldname("createOn")
     private String eafCreatetime;   //创建时间
 
@@ -47,17 +52,9 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
 
     private String eafRLeftid;
 
-    public int getLeave() {
-        return leave;
-    }
+    private int leave;              //数字状态
 
-    public void setLeave(int leave) {
-        this.leave = leave;
-    }
-
-    private int leave;
-    
-    private String cwrUserStatus;   //状态
+    private String cwrUserStatus;   //文字状态
 
     private String cwrWorkclassId;
 
@@ -66,6 +63,13 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     private String cwrUserIn;
 
     private String cwrUserOut;
+    public int getLeave() {
+        return leave;
+    }
+
+    public void setLeave(int leave) {
+        this.leave = leave;
+    }
 
     public String getCwrPrjid() {
         return cwrPrjid;
@@ -122,6 +126,14 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     public void setCwrIdnum(String cwrIdnum) {
         this.cwrIdnum = cwrIdnum;
     }
+
+    public String getCwrWorkClass() { return CwrWorkClass; }
+
+    public void setCwrWorkClass(String cwrWorkClass) { CwrWorkClass = cwrWorkClass; }
+
+    public String getCwrWorkName() { return CwrWorkName; }
+
+    public void setCwrWorkName(String cwrWorkName) { CwrWorkName = cwrWorkName; }
 
     public String getEafCreatetime() {
         return eafCreatetime;
