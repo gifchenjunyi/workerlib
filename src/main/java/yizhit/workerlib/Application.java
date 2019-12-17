@@ -4,8 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import yizhit.workerlib.timer.SelectQuartzAllUserInfo;
 import yizhit.workerlib.timer.SelectQuartzArvhivesInfo;
@@ -15,7 +19,7 @@ import yizhit.workerlib.timer.SelectQuartzUnitrInfo;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 
-@ImportResource("classpath:quartz-config.xml")
+
 //@EnableHystrixDashboard
 //@EnableDiscoveryClient
 //@EnableFeignClients
@@ -23,7 +27,8 @@ import java.net.MalformedURLException;
 //@EnableZuulProxy
 @EnableWebFlux
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib"})
+@SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib"},
+        exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 public class Application {
 
     private static final Logger log = LogManager.getLogger( Application.class );
@@ -41,18 +46,6 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
 
-        //SelectQuartzProjectInfof projectInfo = new SelectQuartzProjectInfof();
-        // projectInfo.batchInsertProjectInfo();
-        //SelectQuartzAllUserInfo userInfo = new SelectQuartzAllUserInfo();
-        //userInfo.batchInsertArchivesInfo();
-        //userInfo.updateAllUserUnit_ID();
-        //SelectQuartzUnitrInfo selectQuartzUnitrInfo = new SelectQuartzUnitrInfo();
-        //selectQuartzUnitrInfo.batchInsertUnitrInfo();
-        SelectQuartzArvhivesInfo selectQuartzArvhivesInfo = new SelectQuartzArvhivesInfo();
-        //selectQuartzArvhivesInfo.batchInsertArvhivesInfo();
-        selectQuartzArvhivesInfo.updateArchivesPhoto();
-        //SelectQuartzCheckWorkceInfo selectQuartzCheckWorkceInfo= new SelectQuartzCheckWorkceInfo();
-        //selectQuartzCheckWorkceInfo.batchInsertCheckWorkceInfo();
         System.out.println("Workerlib has been started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
