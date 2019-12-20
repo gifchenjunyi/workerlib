@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import yizhit.workerlib.timer.SelectQuartzUnitrInfo;
+import yizhit.workerlib.timer.SelectQuartzArvhivesInfo;
 
 @RestController
 public class UnitInfoController {
@@ -15,10 +15,10 @@ public class UnitInfoController {
      */
     @ResponseBody
     @AccessCtrl
-    @RequestMapping(value = "unit/SynUnit",method = RequestMethod.GET)
+    @RequestMapping(value = "unit/SynUnit",method = RequestMethod.POST)
     public  String  SynUnit(){
-        SelectQuartzUnitrInfo selectQuartzUnitrInfo = new SelectQuartzUnitrInfo();
-        selectQuartzUnitrInfo.batchInsertUnitrInfo();
+        SelectQuartzArvhivesInfo selectQuartzArvhivesInfo = new SelectQuartzArvhivesInfo();
+        selectQuartzArvhivesInfo.batchInsertArvhivesInfo();
         return  "同步已成功";
     }
 

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @DisallowConcurrentExecution
-public class SelectQuartzProjectInfof {
+public class SelectQuartzProjectInfo {
 
 
     public  void batchInsertProjectInfo(){
@@ -35,6 +35,10 @@ public class SelectQuartzProjectInfof {
             timerProfile = timerProfile.where("[key]=#{key}").first();
             if(timerProfile!=null) {
                 pageIndex = timerProfile.getValue();
+            }else{
+                timerProfile.setValue(1);
+                Integer i = timerProfile.insert();
+                pageIndex = 1;
             }
             //拼接校验码
             jsonObject.put("pageNum", pageIndex);
@@ -68,15 +72,30 @@ public class SelectQuartzProjectInfof {
                     pageIndex++;
                 }
                 for(ProjectInfo item : list) {
-                    try {
-                        ProjectInfo projectInfo = new ProjectInfo();
-                        projectInfo.setEafId(item.getEafId());
-                        projectInfo = projectInfo.where("project_id=#{eafId}").first();
-                        if (projectInfo == null){
-                            Integer i = item.insert();
-                        }
-                    } catch (Exception e) {
-                        System.out.println("error:===================  " + e);
+                    ProjectInfo projectInfo = new ProjectInfo();
+                    projectInfo.setEafId(item.getEafId());
+                    ProjectInfo js = projectInfo.where("[project_id]=#{eafId}").first();
+                    if (js == null){
+                        Integer i = item.insert();
+                    } else{
+                        projectInfo.setEafModifytime(item.getEafModifytime());
+                        projectInfo.setEafCreatetime(item.getEafCreatetime());
+                        projectInfo.setCwrPrjAddr(item.getCwrPrjAddr());
+                        projectInfo.setCwrPrjName(item.getCwrPrjName());
+                        projectInfo.setCwrPrjJian(item.getCwrPrjJian());
+                        projectInfo.setCwrPrjStatus(item.getCwrPrjStatus());
+                        projectInfo.setCwrPrjType(item.getCwrPrjType());
+                        projectInfo.setCwrPrjCode(item.getCwrPrjCode());
+                        projectInfo.setCwrEndDate(item.getCwrEndDate());
+                        projectInfo.setCwrStartDate(item.getCwrStartDate());
+                        projectInfo.setCwrJsUnit(item.getCwrJsUnit());
+                        projectInfo.setCwrSgUnit(item.getCwrSgUnit());
+                        projectInfo.setCwrControlUnit(item.getCwrControlUnit());
+                        projectInfo.where("[project_id]=#{eafId}").update("[modifyOn]=#{eafModifytime},[createOn]=#{eafCreatetime},[project_address]=#{cwrPrjAddr}," +
+                                                                                        "[project_name]=#{cwrPrjName},[project_brief]=#{cwrPrjJian},[status]=#{cwrPrjStatus}," +
+                                                                                        "[cwrPrjType]=#{cwrPrjType},[cwrPrjCode]=#{cwrPrjCode},[end_time]=#{cwrEndDate}," +
+                                                                                        "[start_time]=#{cwrStartDate},[construction]=#{cwrJsUnit},[organization]=#{cwrSgUnit}," +
+                                                                                        "[supervising]=#{cwrControlUnit}");
                     }
                 }
                 System.out.println("数据插入完成!");

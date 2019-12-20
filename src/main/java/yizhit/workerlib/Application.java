@@ -7,14 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.reactive.config.EnableWebFlux;
-import yizhit.workerlib.timer.SelectQuartzAllUserInfo;
 import yizhit.workerlib.timer.SelectQuartzArvhivesInfo;
-import yizhit.workerlib.timer.SelectQuartzProjectInfof;
-import yizhit.workerlib.timer.SelectQuartzUnitrInfo;
+import yizhit.workerlib.timer.SelectQuartzProjectInfo;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
@@ -45,7 +40,6 @@ public class Application {
         }
 
         SpringApplication.run(Application.class, args);
-
 
         System.out.println("Workerlib has been started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }

@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
 import org.quartz.DisallowConcurrentExecution;
+import yizhit.workerlib.entites.AllUserInfo;
 import yizhit.workerlib.entites.CheckWorkceInfo;
 import yizhit.workerlib.entites.ProjectInfo;
+import yizhit.workerlib.entites.TimerProfile;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
 
@@ -23,6 +25,7 @@ public class SelectQuartzCheckWorkceInfo {
         System.out.println("查询考勤表数据正在进入处理...");
         JSONObject params = new JSONObject();
         JSONArray array = null;
+        int pageIndex = 0;
         try {
             //拼接校验码
             JSONObject jsonObject = new JSONObject();
@@ -30,6 +33,17 @@ public class SelectQuartzCheckWorkceInfo {
             //查询工程ID
             List<ProjectInfo> projectInfoList = projectInfo.where("1=1").select(" project_id ").query(ProjectInfo.class);
             for (ProjectInfo projectInfoitem : projectInfoList) {
+                TimerProfile timerProfile = new TimerProfile();
+                timerProfile.setKey("checkworkce");
+                timerProfile.setPid(projectInfoitem.getEafId());
+                TimerProfile currentTimerProfile = timerProfile.where("[key]=#{key}").and("[pid]=#{pid}").first();
+                if(currentTimerProfile!=null) {
+                    pageIndex = currentTimerProfile.getValue();
+                }else{
+                    timerProfile.setValue(1);
+                    Integer i = timerProfile.insert();
+                    pageIndex = 1;
+                }
                 //拼接密文
                 StringBuilder sb = new StringBuilder();
                 jsonObject.put("prjid", projectInfoitem.getEafId());
@@ -55,19 +69,61 @@ public class SelectQuartzCheckWorkceInfo {
                 String result = RequestUtils.post(FinalUtil.url, str, header);
                 JSONObject json = JSONObject.parseObject(result);
 
-                List<CheckWorkceInfo> checkWorkceInfosList = new ArrayList<CheckWorkceInfo>();// 数据获取正确
+                List<CheckWorkceInfo> checkWorkceInfosList = new ArrayList<CheckWorkceInfo>();
+                // 数据获取正确
                 if (json.containsKey("code") && json.get("code").equals("0")) {
                     array = json.getJSONObject("data").getJSONArray("list");
                     String text = array.toJSONString();
                     checkWorkceInfosList = FastJsonUtils.toList(text,   CheckWorkceInfo.class);
+                    if (checkWorkceInfosList.size() == 500){
+                        pageIndex++;
+                    }
                     for (CheckWorkceInfo info : checkWorkceInfosList) {
                         try {
-                            Integer i = info.insert();
+                            CheckWorkceInfo checkWorkceInfo = new CheckWorkceInfo();
+                            checkWorkceInfo.setEafId(info.getEafId());
+                            checkWorkceInfo.setCwrPrjid(info.getCwrPrjid());
+                            CheckWorkceInfo js = checkWorkceInfo.where("[checkworkce_id]=#{eafId}").and("[cwrPrjid]=#{cwrPrjid}").first();
+                            if (js == null){
+                                Integer i = info.insert();
+                            }else {
+                                checkWorkceInfo.setEafCreator(info.getEafCreator());
+                                checkWorkceInfo.setEafModifytime(info.getEafModifytime());
+                                checkWorkceInfo.setEafCreatetime(info.getEafCreatetime());
+                                checkWorkceInfo.setEafModifier(info.getEafModifier());
+                                checkWorkceInfo.setCwrComid(info.getCwrComid());
+                                checkWorkceInfo.setCwrGrpid(info.getCwrGrpid());
+                                checkWorkceInfo.setCwrUserid(info.getCwrUserid());
+                                checkWorkceInfo.setCwrEquid(info.getCwrEquid());
+                                checkWorkceInfo.setCwrPasstime(info.getCwrPasstime());
+                                checkWorkceInfo.setCwrDirection(info.getCwrDirection());
+                                checkWorkceInfo.setCwrPassmode(info.getCwrPassmode());
+                                checkWorkceInfo.setCwrPasspho(info.getCwrPasspho());
+                                checkWorkceInfo.setCwrPsntype(info.getCwrPsntype());
+                                checkWorkceInfo.setCwrPassdate(info.getCwrPassdate());
+                                checkWorkceInfo.setToTicwrStat(info.getToTicwrStat());
+                                checkWorkceInfo.setCwrLongitude(info.getCwrLongitude());
+                                checkWorkceInfo.setCwrLatitude(info.getCwrLatitude());
+                                checkWorkceInfo.setCwrAddress(info.getCwrAddress());
+                                checkWorkceInfo.setCwrUsertype(info.getCwrUsertype());
+                                checkWorkceInfo.setCwrIdnum(info.getCwrIdnum());
+                                checkWorkceInfo.setCwrProcessStatus(info.getCwrProcessStatus());
+                                checkWorkceInfo.where("[eafId]=#{eafId}").and("[cwrPrjid]=#{cwrPrjid}").update("[eafCreator]=#{eafCreator},[eafModifytime]=#{eafModifytime},[eafCreatetime]=#{eafCreatetime}," +
+                                                                                                                             "[eafModifier]=#{eafModifier},[cwrPrjid]=#{cwrPrjid},[cwrComid]=#{cwrComid}," +
+                                                                                                                             "[cwrGrpid]=#{cwrGrpid},[cwrUserid]=#{cwrUserid},[cwrEquid]=#{cwrEquid}," +
+                                                                                                                             "[cwrPasstime]=#{cwrPasstime},[cwrDirection]=#{cwrDirection},[cwrPassmode]=#{cwrPassmode}," +
+                                                                                                                             "[cwrPasspho]=#{cwrPasspho},[cwrPsntype]=#{cwrPsntype},[cwrPassdate]=#{cwrPassdate}," +
+                                                                                                                             "[toTicwrStat]=#{toTicwrStat},[cwrLongitude]=#{cwrLongitude},[cwrLatitude]=#{cwrLatitude}," +
+                                                                                                                             "[cwrAddress]=#{cwrAddress},[cwrUsertype]=#{cwrUsertype},[cwrIdnum]=#{cwrIdnum}," +
+                                                                                                                             "[cwrProcessStatus]=#{cwrProcessStatus}");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     System.out.println("数据插入完成!");
+                    timerProfile.setValue(pageIndex);
+                    timerProfile.where("[key]=#{key}").and("[pid]=#{pid}").update("[value]=#{value}");
                 } else {
                     System.out.println("error:  " + result);
                 }

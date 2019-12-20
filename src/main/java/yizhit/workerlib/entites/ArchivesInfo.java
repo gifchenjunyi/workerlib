@@ -28,7 +28,7 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     @Fieldname("phone")
     private String eafPhone;         //手机号
 
-    private String cwrIdnumTyp;     //证件类型
+    private String cwrIdnumType;    //证件类型
 
     @Fieldname("id_number")
     private String cwrIdnum;        //证件号码
@@ -63,6 +63,7 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     private String cwrUserIn;
 
     private String cwrUserOut;
+
     public int getLeave() {
         return leave;
     }
@@ -111,12 +112,12 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
         this.eafPhone = eafPhone;
     }
 
-    public String getCwrIdnumTyp() {
-        return cwrIdnumTyp;
+    public String getCwrIdnumType() {
+        return cwrIdnumType;
     }
 
-    public void setCwrIdnumTyp(String cwrIdnumTyp) {
-        this.cwrIdnumTyp = cwrIdnumTyp;
+    public void setCwrIdnumType(String cwrIdnumType) {
+        this.cwrIdnumType = cwrIdnumType;
     }
 
     public String getCwrIdnum() {

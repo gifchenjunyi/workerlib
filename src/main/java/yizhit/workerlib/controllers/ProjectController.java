@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import yizhit.workerlib.timer.SelectQuartzProjectInfo;
 
 @RestController
 public class ProjectController {
@@ -14,10 +15,10 @@ public class ProjectController {
          */
         @ResponseBody
         @AccessCtrl
-        @RequestMapping(value = "project/SynProject",method = RequestMethod.GET)
+        @RequestMapping(value = "project/SynProject",method = RequestMethod.POST)
         public  String  SynAlluser(){
-//            SelectQuartzProjectInfof selectQuartzProjectInfof= new SelectQuartzProjectInfof();
-//            selectQuartzProjectInfof.batchInsertProjectInfo();
+            SelectQuartzProjectInfo selectQuartzProjectInfof= new SelectQuartzProjectInfo();
+            selectQuartzProjectInfof.batchInsertProjectInfo();
             return  "同步已成功";
        }
 
