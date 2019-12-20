@@ -25,6 +25,7 @@ public class SelectQuartzArvhivesInfo {
     public void batchInsertArvhivesInfo(){
         // 数据库数据
         System.out.println("查询工程员工表工作正在进入处理...");
+        SelectQuartzUnitrInfo selectQuartzUnitrInfo = new SelectQuartzUnitrInfo();
         JSONObject params = new JSONObject();
         JSONArray array = null;
         int pageIndex = 0;
@@ -83,30 +84,59 @@ public class SelectQuartzArvhivesInfo {
                         pageIndex++;
                     }
                     for(ArchivesInfo info:archivesInfoList){
-                        try{
-                            if(info.getEafName() != null && !Pattern.compile("[0-9]*").matcher(info.getEafName()).matches()){
-                                info.setLeave(2);
-                                if("进行中".equals(info.getCwrUserStatus())) {
-                                    info.setLeave(1);
-                                }
-                                ArchivesInfo archivesInfo = new ArchivesInfo();
-                                archivesInfo.setUserid(info.getUserid());
-                                archivesInfo.setCwrPrjid(projectInfoitem.getEafId());
-                                ArchivesInfo js = archivesInfo.where("[archives_id]=#{userid}").first();
-                                if (js == null ){
-                                    Integer i = info.insert();
-                                }else if ("结束".equals(info.getCwrUserStatus())){
-                                    info.setLeave(2);
-                                    archivesInfo.where("[archives_id]=#{userid}").update("[cwrUserStatus]=#{cwrUserStatus},[project_id]=#{cwrPrjid},[unit_id]=#{cwrComid}," +
-                                                                                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
-                                                                                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
-                                                                                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
-                                                                                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
-                                                                                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn},[cwrUserOut]=#{cwrUserOut}");
-                                }
+                        //给所有人员表插入单位ID
+                        AllUserInfoUpdate allUserInfoUpdate = new AllUserInfoUpdate();
+                        allUserInfoUpdate.setCwrIdnum(info.getCwrIdnum());
+                        allUserInfoUpdate.setUnitId(info.getCwrComid());
+                        allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
+                        if(info.getEafName() != null && !Pattern.compile("[0-9]*").matcher(info.getEafName()).matches()){
+                            info.setLeave(2);
+                            if("进行中".equals(info.getCwrUserStatus())) {
+                                info.setLeave(1);
                             }
-                        } catch (Exception e) {
-                            System.out.println("error:============"+e);
+                            selectQuartzUnitrInfo.batchInsertUnitrInfo(info.getCwrComid());
+                            ArchivesInfo archivesInfo = new ArchivesInfo();
+                            archivesInfo.setUserid(info.getUserid());
+                            archivesInfo.setCwrPrjid(info.getCwrPrjid());
+                            archivesInfo.setEafId(info.getEafId());
+                            archivesInfo.setCwrUserStatus(info.getCwrUserStatus());
+                            archivesInfo.setCwrComid(info.getCwrComid());
+                            archivesInfo.setEafName(info.getEafName());
+                            archivesInfo.setEafPhone(info.getEafPhone());
+                            archivesInfo.setCwrIdnumType(info.getCwrIdnumType());
+                            archivesInfo.setCwrIdnum(info.getCwrIdnum());
+                            archivesInfo.setCwrWorkClass(info.getCwrWorkClass());
+                            archivesInfo.setCwrWorkName(info.getCwrWorkName());
+                            archivesInfo.setEafCreatetime(info.getEafCreatetime());
+                            archivesInfo.setEafModifier(info.getEafModifier());
+                            archivesInfo.setEafCreator(info.getEafCreator());
+                            archivesInfo.setEafRLeftid(info.getEafRLeftid());
+                            archivesInfo.setLeave(info.getLeave());
+                            archivesInfo.setCwrWorkclassId(info.getCwrWorkclassId());
+                            archivesInfo.setCwrWorktype(info.getCwrWorktype());
+                            archivesInfo.setCwrUserIn(info.getCwrUserIn());
+                            archivesInfo.setCwrUserOut(info.getCwrUserOut());
+                            ArchivesInfo js = archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").first();
+                            if (js == null ){
+                                Integer i = info.insert();
+                            }else if ("结束".equals(info.getCwrUserStatus())){
+                                archivesInfo.setLeave(2);
+                                archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserStatus]=#{cwrUserStatus},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
+                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
+                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
+                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
+                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn},[cwrUserOut]=#{cwrUserOut}," +
+                                        "[leave]=#{leave}");
+                            }else{
+                                //不更新状态
+                                archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserOut]=#{cwrUserOut},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
+                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
+                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
+                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
+                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn}");
+                            }
                         }
                     }
                     System.out.println("数据插入完成!");
@@ -136,7 +166,6 @@ public class SelectQuartzArvhivesInfo {
                 archivesInfo.setCwrIdnum(userInfo.getCwrIdnum());
                 archivesInfo.setPhoto(userInfo.getCwrPhoto());
                 archivesInfo.where("id_number=#{cwrIdnum}").update("photo=#{photo}");
-
             }
         } catch (SQLException e) {
             e.printStackTrace();

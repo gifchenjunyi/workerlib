@@ -34,6 +34,21 @@ public class ProjectInfo  extends Queryable<ProjectInfo> implements Serializable
 
     private String cwrPrjCode;      //工程编码
 
+    @Fieldname("end_time")
+    private String cwrEndDate;       //竣工日期
+
+    @Fieldname("start_time")
+    private String cwrStartDate;     //开工时间
+
+    @Fieldname("construction")
+    private String cwrJsUnit;        //建设单位
+
+    @Fieldname("organization")
+    private String cwrSgUnit;        //施工单位
+
+    @Fieldname("supervising")
+    private String cwrControlUnit;   //监理单位
+
 /*
     private String cwrOrgName;
     private String cwrOrgJian;
@@ -91,6 +106,26 @@ public class ProjectInfo  extends Queryable<ProjectInfo> implements Serializable
     private String cwrPrjView;
 
 */
+
+    public String getCwrEndDate() { return cwrEndDate; }
+
+    public void setCwrEndDate(String cwrEndDate) { this.cwrEndDate = cwrEndDate; }
+
+    public String getCwrStartDate() { return cwrStartDate; }
+
+    public void setCwrStartDate(String cwrStartDate) { this.cwrStartDate = cwrStartDate; }
+
+    public String getCwrJsUnit() { return cwrJsUnit; }
+
+    public void setCwrJsUnit(String cwrJsUnit) { this.cwrJsUnit = cwrJsUnit; }
+
+    public String getCwrSgUnit() { return cwrSgUnit; }
+
+    public void setCwrSgUnit(String cwrSgUnit) { this.cwrSgUnit = cwrSgUnit; }
+
+    public String getCwrControlUnit() { return cwrControlUnit; }
+
+    public void setCwrControlUnit(String cwrControlUnit) { this.cwrControlUnit = cwrControlUnit; }
 
     public String getEafId() {
         return eafId;

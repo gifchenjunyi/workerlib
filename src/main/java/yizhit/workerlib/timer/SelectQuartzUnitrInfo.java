@@ -16,9 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-@DisallowConcurrentExecution
 public class SelectQuartzUnitrInfo {
-    public void batchInsertUnitrInfo(){
+    public void batchInsertUnitrInfo(String uid){
         // 数据库数据
         System.out.println("查询公司表工作正在进入处理...");
         JSONObject params = new JSONObject();
@@ -27,20 +26,22 @@ public class SelectQuartzUnitrInfo {
         try {
             StringBuilder sb = new StringBuilder();
             JSONObject jsonObject = new JSONObject();
-            TimerProfile timerProfile = new TimerProfile();
-            timerProfile.setKey("unit");
-            timerProfile = timerProfile.where("[key]=#{key}").first();
-            if(timerProfile!=null) {
-                pageIndex = timerProfile.getValue();
-            }
+//            TimerProfile timerProfile = new TimerProfile();
+//            timerProfile.setKey("unit");
+//            timerProfile = timerProfile.where("[key]=#{key}").first();
+//            if(timerProfile!=null) {
+//                pageIndex = timerProfile.getValue();
+//            }
             //拼接密文
-            jsonObject.put("pageNum", pageIndex);
+            jsonObject.put("comid", uid);
+//            jsonObject.put("pageNum", pageIndex);
             String formatDate = Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss");
             sb.append("appid=appid1").append("&data="+jsonObject.toJSONString()).append("&format=json").append("&method=company.info").append("&nonce=123456").append("&timestamp="+formatDate).append("&version=1.0").append("&appsecret=123456");
             String hex = sb.toString().toLowerCase();
             String s = SHA256.getSHA256StrJava(hex);
             System.out.println("cd:"+s);
             System.out.println(formatDate);
+
             //发送请求
             params.put("method","company.info");
             params.put("format","json");
@@ -66,20 +67,31 @@ public class SelectQuartzUnitrInfo {
                     pageIndex++;
                 }
                 for(UnitrInfo item : allUnitrInfoList) {
-                    try {
-                        UnitrInfo unitrInfo = new UnitrInfo();
-                        unitrInfo.setEafId(item.getEafId());
-                        unitrInfo = unitrInfo.where("unit_id=#{eafId}").first();
-                        if (unitrInfo == null){
-                            Integer i = item.insert();
-                        }
-                    } catch (Exception e) {
-                        System.out.println("error:===================  " + e);
+                    UnitrInfo unitrInfo = new UnitrInfo();
+                    unitrInfo.setEafId(item.getEafId());
+                    UnitrInfo js = unitrInfo.where("unit_id=#{eafId}").first();
+                    if (js == null){
+                        Integer i = item.insert();
+                    }else {
+                        unitrInfo.setCwrComName(item.getCwrComName());
+                        unitrInfo.setCwrCode(item.getCwrCode());
+                        unitrInfo.setCwrComCode(item.getCwrComCode());
+                        unitrInfo.setCwrComFaren(item.getCwrComFaren());
+                        unitrInfo.setCwrComAddr(item.getCwrComAddr());
+                        unitrInfo.setCwrComStatus(item.getCwrComStatus());
+                        unitrInfo.setEafCreator(item.getEafCreator());
+                        unitrInfo.setEafCreatetime(item.getEafCreatetime());
+                        unitrInfo.setEafModifier(item.getEafModifier());
+                        unitrInfo.setCwrComType(item.getCwrComType());
+                        unitrInfo.where("unit_id=#{eafId}").update("[unit_name]=#{cwrComName},[unit_number]=#{cwrCode},[project_license]=#{cwrComCode}," +
+                                                                                 "[principal]=#{cwrComFaren},[userPath]=#{cwrComAddr},[status]=#{cwrComStatus}," +
+                                                                                 "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier}," +
+                                                                                 "[modifyOn]=#{eafModifytime},[cwrComType]=#{cwrComType}");
                     }
                 }
                 System.out.println("数据插入完成!");
-                timerProfile.setValue(pageIndex);
-                timerProfile.where("[key]=#{key}").update("[value]=#{value}");
+//                timerProfile.setValue(pageIndex);
+//                timerProfile.where("[key]=#{key}").update("[value]=#{value}");
             }
             else {
                 System.out.println("error:  " + result);

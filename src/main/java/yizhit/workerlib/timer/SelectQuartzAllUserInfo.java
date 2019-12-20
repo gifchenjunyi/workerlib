@@ -28,8 +28,8 @@ public class SelectQuartzAllUserInfo {
         try {
             //校验验码
             JSONObject jsonObject = new JSONObject();
-            ProjectInfo projectInfo = new ProjectInfo();
             //查询工程ID
+            ProjectInfo projectInfo = new ProjectInfo();
             List<ProjectInfo> projectInfoList = projectInfo.where("1=1").select(" project_id ").query(ProjectInfo.class);
             for (ProjectInfo projectInfoitem:projectInfoList) {
                 TimerProfile timerProfile = new TimerProfile();
@@ -82,15 +82,30 @@ public class SelectQuartzAllUserInfo {
                         pageIndex++;
                     }
                     for(AllUserInfo info:allUserInfoList){
-                        try {
-                            AllUserInfo allUserInfo = new AllUserInfo();
-                            allUserInfo.setEafId(info.getEafId());
-                            allUserInfo = allUserInfo.where("[eafId]=#{eafId}").first();
-                            if (allUserInfo == null){
-                                Integer i = info.insert();
-                            }
-                        } catch (Exception e) {
-                            System.out.println("error:===================  " + e);
+                        AllUserInfo allUserInfo = new AllUserInfo();
+                        allUserInfo.setEafId(info.getEafId());
+                        AllUserInfo js = allUserInfo.where("[eafId]=#{eafId}").first();
+                        if (js == null){
+                            Integer i = info.insert();
+                        }else {
+                            allUserInfo.setEafName(info.getEafName());
+                            allUserInfo.setEafPhone(info.getEafPhone());
+                            allUserInfo.setCwrIdnumType(info.getCwrIdnumType());
+                            allUserInfo.setCwrIdnum(info.getCwrIdnum());
+                            allUserInfo.setCwrIdphotoScan(info.getCwrIdphotoScan());
+                            allUserInfo.setCwrPhoto(info.getCwrPhoto());
+                            allUserInfo.setEafCreatetime(info.getEafCreatetime());
+                            allUserInfo.setEafModifytime(info.getEafModifytime());
+                            allUserInfo.setCwrIdaddr(info.getCwrIdaddr());
+                            allUserInfo.setEafCreator(info.getEafCreator());
+                            allUserInfo.setEafModifier(info.getEafModifier());
+                            allUserInfo.setCwrStatus(info.getCwrStatus());
+                            allUserInfo.setEafStatus(info.getEafStatus());
+                            allUserInfo.where("[eafId]=#{eafId}").update("[eafName]=#{eafName},[eafPhone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
+                                                                                         "[cwrIdnum]=#{cwrIdnum},[cwrIdphotoScan]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
+                                                                                         "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
+                                                                                         "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
+                                                                                         "[eafStatus]=#{eafStatus}");
                         }
                     }
                     System.out.println("数据插入完成!");
@@ -109,24 +124,4 @@ public class SelectQuartzAllUserInfo {
 
     }
 
-
-
-    /**
-     * 给所有人员表插入公司ID
-     */
-    public void updateAllUserUnit_ID(){
-        try {
-            ArchivesInfo archivesInfo = new ArchivesInfo();
-            List<ArchivesInfo> infoList = archivesInfo.where("1=1").select("id_number,unit_id").query();
-            for (ArchivesInfo item:infoList) {
-                AllUserInfoUpdate allUserInfoUpdate = new AllUserInfoUpdate();
-                allUserInfoUpdate.setCwrIdnum(item.getCwrIdnum());
-                allUserInfoUpdate.setUnitId(item.getCwrComid());
-                allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

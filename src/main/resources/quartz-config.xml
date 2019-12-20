@@ -5,7 +5,7 @@
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 配置ProjectInfo类 -->
-    <bean id="myProjectInfo" class="yizhit.workerlib.timer.SelectQuartzProjectInfof"></bean>
+    <bean id="myProjectInfo" class="yizhit.workerlib.timer.SelectQuartzProjectInfo"></bean>
     <!--添加数据到数据库任务-->
     <!-- 配置ProjectInfoDetail -->
     <bean id="springQtzProjectInfofMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -28,7 +28,7 @@
     <bean id="myAllUserInfo" class="yizhit.workerlib.timer.SelectQuartzAllUserInfo"></bean>
     <!--添加数据到数据库任务-->
     <!-- 配置ProjectInfofDetail -->
-    <bean id="springQtzAllUserInfofMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <bean id="springQtzAllUserInfoMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 指定任务类 -->
         <property name="targetObject" ref="myAllUserInfo"></property>
         <!-- 指定任务方法 -->
@@ -37,31 +37,51 @@
     <!-- 配置tirgger触发器 -->
     <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ProjectInfofDetail -->
-        <property name="jobDetail" ref="springQtzAllUserInfofMethod"></property>
+        <property name="jobDetail" ref="springQtzAllUserInfoMethod"></property>
 
         <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */6 * * * ?"></property>
+        <property name="cronExpression" value="0 */8 * * * ?"></property>
     </bean>
+
+
+    <!-- 配置UserInfoUnit_id类 -->
+    <!--<bean id="myAllUserInfoUnitID" class="yizhit.workerlib.timer.SelectQuartzAllUserInfo"></bean>-->
+    <!--&lt;!&ndash;添加数据到数据库任务&ndash;&gt;-->
+    <!--&lt;!&ndash; 配置UserInfoUnit_idDetail &ndash;&gt;-->
+    <!--<bean id="springQtzAllUserInfoUnit_IdMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
+        <!--<property name="targetObject" ref="myAllUserInfoUnitID"></property>-->
+        <!--&lt;!&ndash; 指定任务方法 &ndash;&gt;-->
+        <!--<property name="targetMethod" value="updateAllUserUnitID"></property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 配置tirgger触发器 &ndash;&gt;-->
+    <!--<bean id="cronTrigger6" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--&lt;!&ndash; ProjectInfofDetail &ndash;&gt;-->
+        <!--<property name="jobDetail" ref="springQtzAllUserInfoUnit_IdMethod"></property>-->
+
+        <!--&lt;!&ndash; cron表达式，执行时间  每9分钟执行一次 &ndash;&gt;-->
+        <!--<property name="cronExpression" value="0 */9 * * ?"></property>-->
+    <!--</bean>-->
 
 
     <!-- 配置UnitInfo类 -->
-    <bean id="myUnitInfo" class="yizhit.workerlib.timer.SelectQuartzUnitrInfo"></bean>
+    <!--<bean id="myUnitInfo" class="yizhit.workerlib.timer.SelectQuartzUnitrInfo"></bean>-->
     <!--添加数据到数据库任务-->
     <!-- 配置ProjectInfofDetail -->
-    <bean id="springQtzUnitInfoMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 指定任务类 -->
-        <property name="targetObject" ref="myUnitInfo"></property>
-        <!-- 指定任务方法 -->
-        <property name="targetMethod" value="batchInsertUnitrInfo"></property>
-    </bean>
+    <!--<bean id="springQtzUnitInfoMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--&lt;!&ndash; 指定任务类 &ndash;&gt;-->
+        <!--<property name="targetObject" ref="myUnitInfo"></property>-->
+        <!--&lt;!&ndash; 指定任务方法 &ndash;&gt;-->
+        <!--<property name="targetMethod" value="batchInsertUnitrInfo"></property>-->
+    <!--</bean>-->
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <!-- UnitInfofDetail -->
-        <property name="jobDetail" ref="springQtzUnitInfoMethod"></property>
+    <!--<bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--&lt;!&ndash; UnitInfofDetail &ndash;&gt;-->
+        <!--<property name="jobDetail" ref="springQtzUnitInfoMethod"></property>-->
 
-        <!-- cron表达式，执行时间  每5分钟执行一次 -->
-        <property name="cronExpression" value="0 */5 * * * ?"></property>
-    </bean>
+        <!--&lt;!&ndash; cron表达式，执行时间  每5分钟执行一次 &ndash;&gt;-->
+        <!--<property name="cronExpression" value="0 */5 * * * ?"></property>-->
+    <!--</bean>-->
 
 
 
@@ -76,13 +96,55 @@
         <property name="targetMethod" value="batchInsertArvhivesInfo"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ArvhivesInfoDetail -->
         <property name="jobDetail" ref="springQtzmyArvhivesInfoMethod"></property>
 
-        <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */6 * * * ?"></property>
+        <!-- cron表达式，执行时间  每1小时执行一次 -->
+        <property name="cronExpression" value="0 0 0/1 * * ? "></property>
     </bean>
+
+
+
+    <!-- 配置myArvhivesInfoPhoto类 -->
+    <bean id="myArvhivesInfoPhoto" class="yizhit.workerlib.timer.SelectQuartzArvhivesInfo"></bean>
+    <!--添加数据到数据库任务-->
+    <!-- 配置myArvhivesInfoPhotoDetail -->
+    <bean id="springQtzmyArvhivesInfoPhotoMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="myArvhivesInfoPhoto"></property>
+        <!-- 指定任务方法 -->
+        <property name="targetMethod" value="updateArchivesPhoto"></property>
+    </bean>
+    <!-- 配置tirgger触发器 -->
+    <bean id="cronTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- ArvhivesInfoPhotoDetail -->
+        <property name="jobDetail" ref="springQtzmyArvhivesInfoPhotoMethod"></property>
+
+        <!-- cron表达式，执行时间  每10分钟执行一次 -->
+        <property name="cronExpression" value="0 0/1 * * * ? * "></property>
+    </bean>
+
+
+    <!-- 配置myArvhivesInfoPhoto类 -->
+    <bean id="myCheckWorkceInfo" class="yizhit.workerlib.timer.SelectQuartzCheckWorkceInfo"></bean>
+    <!--添加数据到数据库任务-->
+    <!-- 配置myArvhivesInfoPhotoDetail -->
+    <bean id="springQtzmyCheckWorkceInfoMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="myCheckWorkceInfo"></property>
+        <!-- 指定任务方法 -->
+        <property name="targetMethod" value="batchInsertCheckWorkceInfo"></property>
+    </bean>
+    <!-- 配置tirgger触发器 -->
+    <bean id="cronTrigger5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- ArvhivesInfoPhotoDetail -->
+        <property name="jobDetail" ref="springQtzmyCheckWorkceInfoMethod"></property>
+
+        <!-- cron表达式，执行时间  每10分钟执行一次 -->
+        <property name="cronExpression" value="0 */5 * * * ?"></property>
+    </bean>
+
 
 
 
@@ -93,8 +155,8 @@
                  <!--此处指的是上面定时的方法-->
                 <!--<ref bean="cronTrigger1"></ref>-->
                 <!--<ref bean="cronTrigger2"></ref>-->
-                <!--<ref bean="cronTrigger3"></ref>-->
                 <!--<ref bean="cronTrigger4"></ref>-->
+                <!--<ref bean="cronTrigger5"></ref>-->
             </list>
         </property>
 
