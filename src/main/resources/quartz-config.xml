@@ -20,7 +20,7 @@
         <property name="jobDetail" ref="springQtzProjectInfofMethod"></property>
 
         <!-- cron表达式，执行时间  每5分钟执行一次 -->
-        <property name="cronExpression" value="0 */5 * * * ?"></property>
+        <property name="cronExpression" value="0 */1 * * * ?"></property>
     </bean>
 
 

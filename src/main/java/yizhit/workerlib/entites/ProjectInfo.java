@@ -135,7 +135,6 @@ public class ProjectInfo  extends Queryable<ProjectInfo> implements Serializable
         this.eafId = eafId;
     }
 
-
     public String getEafModifytime() {
         return eafModifytime;
     }

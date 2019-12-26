@@ -102,7 +102,7 @@ public class SelectQuartzAllUserInfo {
                             allUserInfo.setCwrStatus(info.getCwrStatus());
                             allUserInfo.setEafStatus(info.getEafStatus());
                             allUserInfo.where("[eafId]=#{eafId}").update("[eafName]=#{eafName},[eafPhone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
-                                                                                         "[cwrIdnum]=#{cwrIdnum},[cwrIdphotoScan]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
+                                                                                         "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
                                                                                          "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
                                                                                          "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
                                                                                          "[eafStatus]=#{eafStatus}");

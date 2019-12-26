@@ -1,6 +1,7 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.Fieldname;
 import entity.query.annotation.Tablename;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
 
     private String cwrIdnum;        //身份证号码
 
+    @Fieldname("id_card_front")
     private String cwrIdphotoScan;  //身份证扫描件
 
     private String cwrPhoto;        //照片
