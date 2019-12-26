@@ -5,20 +5,22 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
+import yizhit.workerlib.entites.Group;
+import yizhit.workerlib.entites.Privilege;
 import yizhit.workerlib.entites.ProjectInfo;
 import yizhit.workerlib.entites.TimerProfile;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @DisallowConcurrentExecution
 public class SelectQuartzProjectInfo {
 
+    private static final Logger log = LogManager.getLogger(SelectQuartzProjectInfo.class);
 
     public  void batchInsertProjectInfo(){
         // 数据库数据
@@ -32,9 +34,9 @@ public class SelectQuartzProjectInfo {
             jsonObject.put("idnum","445122199309195215");
             TimerProfile timerProfile = new TimerProfile();
             timerProfile.setKey("project");
-            timerProfile = timerProfile.where("[key]=#{key}").first();
-            if(timerProfile!=null) {
-                pageIndex = timerProfile.getValue();
+            TimerProfile currentTimerProfile = timerProfile.where("[key]=#{key}").first();
+            if(currentTimerProfile!=null) {
+                pageIndex = currentTimerProfile.getValue();
             }else{
                 timerProfile.setValue(1);
                 Integer i = timerProfile.insert();
@@ -72,30 +74,82 @@ public class SelectQuartzProjectInfo {
                     pageIndex++;
                 }
                 for(ProjectInfo item : list) {
-                    ProjectInfo projectInfo = new ProjectInfo();
-                    projectInfo.setEafId(item.getEafId());
-                    ProjectInfo js = projectInfo.where("[project_id]=#{eafId}").first();
-                    if (js == null){
-                        Integer i = item.insert();
-                    } else{
-                        projectInfo.setEafModifytime(item.getEafModifytime());
-                        projectInfo.setEafCreatetime(item.getEafCreatetime());
-                        projectInfo.setCwrPrjAddr(item.getCwrPrjAddr());
-                        projectInfo.setCwrPrjName(item.getCwrPrjName());
-                        projectInfo.setCwrPrjJian(item.getCwrPrjJian());
-                        projectInfo.setCwrPrjStatus(item.getCwrPrjStatus());
-                        projectInfo.setCwrPrjType(item.getCwrPrjType());
-                        projectInfo.setCwrPrjCode(item.getCwrPrjCode());
-                        projectInfo.setCwrEndDate(item.getCwrEndDate());
-                        projectInfo.setCwrStartDate(item.getCwrStartDate());
-                        projectInfo.setCwrJsUnit(item.getCwrJsUnit());
-                        projectInfo.setCwrSgUnit(item.getCwrSgUnit());
-                        projectInfo.setCwrControlUnit(item.getCwrControlUnit());
-                        projectInfo.where("[project_id]=#{eafId}").update("[modifyOn]=#{eafModifytime},[createOn]=#{eafCreatetime},[project_address]=#{cwrPrjAddr}," +
-                                                                                        "[project_name]=#{cwrPrjName},[project_brief]=#{cwrPrjJian},[status]=#{cwrPrjStatus}," +
-                                                                                        "[cwrPrjType]=#{cwrPrjType},[cwrPrjCode]=#{cwrPrjCode},[end_time]=#{cwrEndDate}," +
-                                                                                        "[start_time]=#{cwrStartDate},[construction]=#{cwrJsUnit},[organization]=#{cwrSgUnit}," +
-                                                                                        "[supervising]=#{cwrControlUnit}");
+
+                    ProjectInfo js = null;
+                    ProjectInfo projectInfo = null;
+                    try {
+                        //获取Group表的id
+                        String groupId = UUID.randomUUID().toString().replace("-", "");
+                        Group group = new Group();
+                        group.setGroupId(groupId);
+                        group.setUserPath("0/1");
+                        group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                        group.setGroupName(item.getCwrPrjName());
+
+                        //获取Privilege表的id
+                        String privilegeId = UUID.randomUUID().toString().replace("-", "");
+                        Privilege privilege = new Privilege();
+                        privilege.setPrivilegeId(privilegeId);
+                        privilege.setGroupId(groupId);
+                        privilege.setRoleId("9d83cad925124244b1b5ec7cf0656015");
+                        privilege.setCanAdd(1);
+                        privilege.setCanDelete(1);
+                        privilege.setCanUpdate(1);
+                        privilege.setCanView(1);
+                        privilege.setCanDownload(1);
+                        privilege.setCanPreviewDoc(1);
+                        privilege.setCanUpload(1);
+                        privilege.setCanExport(1);
+                        privilege.setCanImport(1);
+                        privilege.setCanDecrypt(1);
+                        privilege.setCanList(1);
+                        privilege.setCanQuery(1);
+                        privilege.setScope(4);
+                        privilege.setUserPath("0/1");
+                        privilege.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+
+                        projectInfo = new ProjectInfo();
+                        projectInfo.setEafId(item.getEafId());
+                        //查找是否有相同的公司
+                        js = projectInfo.where("[project_id]=#{eafId}").first();
+                        if (js == null) {
+                            Integer i = item.insert();
+                            group.insert();
+                            privilege.insert();
+                        } else {
+                            projectInfo.setEafModifytime(item.getEafModifytime());
+                            projectInfo.setEafCreatetime(item.getEafCreatetime());
+                            projectInfo.setCwrPrjAddr(item.getCwrPrjAddr());
+                            projectInfo.setCwrPrjName(item.getCwrPrjName());
+                            projectInfo.setCwrPrjJian(item.getCwrPrjJian());
+                            projectInfo.setCwrPrjStatus(item.getCwrPrjStatus());
+                            projectInfo.setCwrPrjType(item.getCwrPrjType());
+                            projectInfo.setCwrPrjCode(item.getCwrPrjCode());
+                            projectInfo.setCwrEndDate(item.getCwrEndDate());
+                            projectInfo.setCwrStartDate(item.getCwrStartDate());
+                            projectInfo.setCwrJsUnit(item.getCwrJsUnit());
+                            projectInfo.setCwrSgUnit(item.getCwrSgUnit());
+                            projectInfo.setCwrControlUnit(item.getCwrControlUnit());
+                            projectInfo.where("[project_id]=#{eafId}").update("[modifyOn]=#{eafModifytime},[createOn]=#{eafCreatetime},[project_address]=#{cwrPrjAddr}," +
+                                    "[project_name]=#{cwrPrjName},[project_brief]=#{cwrPrjJian},[status]=#{cwrPrjStatus}," +
+                                    "[cwrPrjType]=#{cwrPrjType},[cwrPrjCode]=#{cwrPrjCode},[end_time]=#{cwrEndDate}," +
+                                    "[start_time]=#{cwrStartDate},[construction]=#{cwrJsUnit},[organization]=#{cwrSgUnit}," +
+                                    "[supervising]=#{cwrControlUnit}");
+                            group.where("[groupName]=#{groupName}").update("[groupName]=#{groupName}");
+                        }
+                    }
+                    catch (Exception e) {
+                        if (js == null) {
+                            log.error("fail to insert: =============================================================>");
+                            log.error(FastJsonUtils.convertObjectToJSON(item));
+                        }
+                        else {
+                            log.error("fail to update: ------------------------------------------------------------>");
+                            log.error(FastJsonUtils.convertObjectToJSON(projectInfo));
+                        }
+
+                        log.error("--------------------------------------------------------------------------------");
+                        log.error(e);
                     }
                 }
                 System.out.println("数据插入完成!");
