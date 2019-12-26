@@ -20,6 +20,7 @@ entity:
     unit.unit_id: UUID_RANDOM
     archives.archives_id: UUID_RANDOM
     archives.eafId: UUID_RANDOM
+    alluser.eafId: UUID_RANDOM
 
   security: #安全配置选项
     encrypt:
@@ -39,6 +40,11 @@ entity:
   formatter: #查询结果输出格式，createOn、modifyOn，也可以精确格式化:[表名].[字段名]
     createOn: yyyy-MM-dd HH:mm
     modifyOn: yyyy-MM-dd HH:mm
+    start_time: yyyy-MM-dd HH:mm
+    end_time: yyyy-MM-dd HH:mm
+    startTime: yyyy-MM-dd HH:mm
+    endTime: yyyy-MM-dd HH:mm
+    evaluateTime: yyyy-MM-dd HH:mm
     appraise_time: yyyy-MM-dd HH:mm
 
   table:

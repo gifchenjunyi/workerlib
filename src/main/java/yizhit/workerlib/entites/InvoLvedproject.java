@@ -15,7 +15,7 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
    private String end_time ;        //结束时间
    private String userPath;         //用户地址
    private String modifyBy ;        //更新人
-   private String modifyTime ;      //更新时间
+   private String modifyOn ;      //更新时间
    private String createOn ;          //创建时间
    private long createBy ;        //创建人
 
@@ -84,11 +84,11 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
     }
 
     public String getDatetime() {
-        return modifyTime;
+        return modifyOn;
     }
 
     public void setDatetime(String datetime) {
-        this.modifyTime = datetime;
+        this.modifyOn = datetime;
     }
 
     public String getCreateOn() {
