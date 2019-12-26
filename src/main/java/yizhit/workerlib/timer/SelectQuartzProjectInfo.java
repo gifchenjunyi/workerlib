@@ -137,7 +137,6 @@ public class SelectQuartzProjectInfo {
                                     "[supervising]=#{cwrControlUnit}");
                             group.where("[groupName]=#{groupName}").update("[groupName]=#{groupName}");
                         }
-
                     }
                     catch (Exception e) {
                         if (js == null) {

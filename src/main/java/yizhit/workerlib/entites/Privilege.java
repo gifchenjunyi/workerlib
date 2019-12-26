@@ -28,6 +28,7 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
     private String createOn;
     private int createBy;
 
+
     public String getPrivilegeId() {
         return privilegeId;
     }

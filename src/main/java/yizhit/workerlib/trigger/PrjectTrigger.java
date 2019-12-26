@@ -57,7 +57,6 @@ public final class PrjectTrigger {
             privilege.setUserPath("0/1");
             privilege.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             privilege.insert();
-
         }
         RequestWrapper wrapper = (RequestWrapper) request;
         wrapper.setPostParameter(list);

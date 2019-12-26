@@ -107,6 +107,7 @@ public class SelectQuartzAllUserInfo {
                                                                                          "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
                                                                                          "[eafStatus]=#{eafStatus}");
                         }
+
                     }
                     System.out.println("数据插入完成!");
                     timerProfile.setValue(pageIndex);

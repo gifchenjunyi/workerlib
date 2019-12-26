@@ -18,6 +18,7 @@ public class Group extends Queryable<Group> implements Serializable {
         return groupId;
     }
 
+
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
