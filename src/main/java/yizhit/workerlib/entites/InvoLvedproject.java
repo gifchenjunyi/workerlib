@@ -16,7 +16,7 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
    private String userPath;         //用户地址
    private String modifyBy ;        //更新人
    private String modifyOn ;      //更新时间
-   private String createOn ;        //创建时间
+   private String createOn ;          //创建时间
    private long createBy ;        //创建人
 
     public int getId() {
