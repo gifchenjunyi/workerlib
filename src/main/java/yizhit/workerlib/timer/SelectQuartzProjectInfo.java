@@ -1,5 +1,6 @@
 package yizhit.workerlib.timer;
 
+import ccait.ccweb.model.RoleModel;
 import ccait.ccweb.utils.FastJsonUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -86,12 +87,17 @@ public class SelectQuartzProjectInfo {
                         group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                         group.setGroupName(item.getCwrPrjName());
 
+                        //查找管理员id
+                        RoleModel roleModel= new RoleModel();
+                        roleModel.setRoleName("管理员");
+                        RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
+
                         //获取Privilege表的id
                         String privilegeId = UUID.randomUUID().toString().replace("-", "");
                         Privilege privilege = new Privilege();
                         privilege.setPrivilegeId(privilegeId);
                         privilege.setGroupId(groupId);
-                        privilege.setRoleId("9d83cad925124244b1b5ec7cf0656015");
+                        privilege.setRoleId(roleId.getRoleId());
                         privilege.setCanAdd(1);
                         privilege.setCanDelete(1);
                         privilege.setCanUpdate(1);

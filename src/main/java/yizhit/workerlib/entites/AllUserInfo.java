@@ -152,7 +152,7 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
     public void setEafStatus(String eafStatus) {
         this.eafStatus = eafStatus;
     }
-    
+
 //    private String cwrCertifiDate;
 //    private String eafQfjg;
 //    private String eafYxtime;

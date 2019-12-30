@@ -1,17 +1,24 @@
-//package yizhit.workerlib;
-//
-//import ccait.ccweb.entites.Archives;
-//import ccait.ccweb.utils.UploadUtils;
-//import entity.query.core.ApplicationConfig;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.sql.SQLException;
-//import java.util.List;
-//
-//public class Testtt {
-//    public static void main(String[] args) {
-//
+package yizhit.workerlib;
+
+import ccait.ccweb.entites.Archives;
+import ccait.ccweb.model.RoleModel;
+import ccait.ccweb.utils.UploadUtils;
+import entity.query.core.ApplicationConfig;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+public class Testtt {
+    public static void main(String[] args) {
+//        RoleModel roleModel= new RoleModel();
+//        roleModel.setRoleName("工人");
+//        try {
+//            RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 //        try {
 //            String path = ApplicationConfig.getInstance().get("${entity.upload.workerlib.archives.photo.path}");
 //            Archives entity = new Archives();
@@ -31,12 +38,12 @@
 //        } catch (SQLException | IOException e) {
 //            e.printStackTrace();
 //        }
-//    }
-//
-//    private static List<Archives> getArchives() throws SQLException {
-//        Archives entity = new Archives();
-//        return entity
-//                        .where("photo is null")
-//                        .query(0, 50);
-//    }
-//}
+    }
+
+    private static List<Archives> getArchives() throws SQLException {
+        Archives entity = new Archives();
+        return entity
+                        .where("photo is null")
+                        .query(0, 50);
+    }
+}

@@ -2,6 +2,7 @@ package yizhit.workerlib.trigger;
 
 import ccait.ccweb.annotation.*;
 import ccait.ccweb.filter.RequestWrapper;
+import ccait.ccweb.model.RoleModel;
 import entity.query.Datetime;
 import org.springframework.stereotype.Component;
 import yizhit.workerlib.entites.Group;
@@ -35,12 +36,17 @@ public final class PrjectTrigger {
             group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             group.insert();
 
+            //查找工人id
+            RoleModel roleModel= new RoleModel();
+            roleModel.setRoleName("管理员");
+            RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
+
             //获取Privilege表的id
             String privilegeId = UUID.randomUUID().toString().replace("-", "");
             Privilege privilege = new Privilege();
             privilege.setPrivilegeId(privilegeId);
             privilege.setGroupId(groupId);
-            privilege.setRoleId("9d83cad925124244b1b5ec7cf0656015");
+            privilege.setRoleId(roleId.getRoleId());
             privilege.setCanAdd(1);
             privilege.setCanDelete(1);
             privilege.setCanUpdate(1);
