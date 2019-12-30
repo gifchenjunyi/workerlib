@@ -75,6 +75,11 @@ entity:
 
   upload: #上传设置
     workerlib: #库名
+      alluser: #表名
+        qr_code: #字段名
+          maxSize: 5 #上传文件最大尺寸，单位: MB
+          mimeType: gif, jpg, png, jpeg #允许上传的文件格式
+          path: /home/workerlib-ui/upload/qrcode
       appraise_photo: #表名
         photo: #字段名
           maxSize: 5 #上传文件最大尺寸，单位: MB
@@ -206,3 +211,7 @@ log4j:
 websocket:
   url: ws://127.0.0.1:8777/websocket
   enable: false
+
+qrcode:
+  width: 200
+  height: 200

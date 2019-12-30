@@ -67,27 +67,29 @@ public class SelectQuartzUnitrInfo {
                     pageIndex++;
                 }
                 for(UnitrInfo item : allUnitrInfoList) {
-                    UnitrInfo unitrInfo = new UnitrInfo();
-                    unitrInfo.setEafId(item.getEafId());
-                    UnitrInfo js = unitrInfo.where("unit_id=#{eafId}").first();
-                    if (js == null){
-                        Integer i = item.insert();
-                    }else {
-                        unitrInfo.setCwrComName(item.getCwrComName());
-                        unitrInfo.setCwrCode(item.getCwrCode());
-                        unitrInfo.setCwrComCode(item.getCwrComCode());
-                        unitrInfo.setCwrComFaren(item.getCwrComFaren());
-                        unitrInfo.setCwrComAddr(item.getCwrComAddr());
-                        unitrInfo.setCwrComStatus(item.getCwrComStatus());
-                        unitrInfo.setEafCreator(item.getEafCreator());
-                        unitrInfo.setEafCreatetime(item.getEafCreatetime());
-                        unitrInfo.setEafModifier(item.getEafModifier());
-                        unitrInfo.setCwrComType(item.getCwrComType());
-                        unitrInfo.where("unit_id=#{eafId}").update("[unit_name]=#{cwrComName},[unit_number]=#{cwrCode},[project_license]=#{cwrComCode}," +
-                                                                                 "[principal]=#{cwrComFaren},[userPath]=#{cwrComAddr},[status]=#{cwrComStatus}," +
-                                                                                 "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier}," +
-                                                                                 "[modifyOn]=#{eafModifytime},[cwrComType]=#{cwrComType}");
-                    }
+                   try {
+                       UnitrInfo unitrInfo = new UnitrInfo();
+                       unitrInfo.setEafId(item.getEafId());
+                       UnitrInfo js = unitrInfo.where("unit_id=#{eafId}").first();
+                       if (js == null){
+                           Integer i = item.insert();
+                       }else {
+                           unitrInfo.setCwrComName(item.getCwrComName());
+                           unitrInfo.setCwrCode(item.getCwrCode());
+                           unitrInfo.setCwrComCode(item.getCwrComCode());
+                           unitrInfo.setCwrComFaren(item.getCwrComFaren());
+                           unitrInfo.setCwrComAddr(item.getCwrComAddr());
+                           unitrInfo.setCwrComStatus(item.getCwrComStatus());
+                           unitrInfo.setEafCreator(item.getEafCreator());
+                           unitrInfo.setEafCreatetime(item.getEafCreatetime());
+                           unitrInfo.setEafModifier(item.getEafModifier());
+                           unitrInfo.setCwrComType(item.getCwrComType());
+                           unitrInfo.where("unit_id=#{eafId}").update("[unit_name]=#{cwrComName},[unit_number]=#{cwrCode},[project_license]=#{cwrComCode}," +
+                                   "[principal]=#{cwrComFaren},[userPath]=#{cwrComAddr},[status]=#{cwrComStatus}," +
+                                   "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier}," +
+                                   "[modifyOn]=#{eafModifytime},[cwrComType]=#{cwrComType}");
+                       }
+                   }catch (Exception e){e.printStackTrace();}
                 }
                 System.out.println("数据插入完成!");
 //                timerProfile.setValue(pageIndex);

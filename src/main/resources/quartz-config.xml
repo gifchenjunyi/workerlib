@@ -40,7 +40,7 @@
         <property name="jobDetail" ref="springQtzAllUserInfoMethod"></property>
 
         <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */8 * * * ?"></property>
+        <property name="cronExpression" value="0 */10 * * * ?"></property>
     </bean>
 
 
@@ -153,7 +153,7 @@
         <property name="triggers">
             <list>
                  <!--此处指的是上面定时的方法-->
-                <!--<ref bean="cronTrigger1"></ref>-->
+                <!--&lt;!&ndash;<ref bean="cronTrigger1"></ref>&ndash;&gt;-->
                 <!--<ref bean="cronTrigger2"></ref>-->
                 <!--<ref bean="cronTrigger4"></ref>-->
                 <!--<ref bean="cronTrigger5"></ref>-->

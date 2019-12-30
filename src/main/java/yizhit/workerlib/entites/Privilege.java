@@ -3,11 +3,12 @@ package yizhit.workerlib.entites;
 import entity.query.Queryable;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Privilege extends Queryable<Privilege> implements Serializable {
     private String privilegeId;     //权限表ID
     private String groupId;         //分组表id
-    private String roleId;          //角色id
+    private UUID roleId;          //角色id
     private String aclId;
     private int canAdd;
     private int canDelete;
@@ -45,11 +46,11 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
         this.groupId = groupId;
     }
 
-    public String getRoleId() {
+    public UUID getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(UUID roleId) {
         this.roleId = roleId;
     }
 

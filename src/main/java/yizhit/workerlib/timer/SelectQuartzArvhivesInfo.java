@@ -84,60 +84,62 @@ public class SelectQuartzArvhivesInfo {
                         pageIndex++;
                     }
                     for(ArchivesInfo info:archivesInfoList){
-                        //给所有人员表插入单位ID
-                        AllUserInfoUpdate allUserInfoUpdate = new AllUserInfoUpdate();
-                        allUserInfoUpdate.setCwrIdnum(info.getCwrIdnum());
-                        allUserInfoUpdate.setUnitId(info.getCwrComid());
-                        allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
-                        if(info.getEafName() != null && !Pattern.compile("[0-9]*").matcher(info.getEafName()).matches()){
-                            info.setLeave(2);
-                            if("进行中".equals(info.getCwrUserStatus())) {
-                                info.setLeave(1);
+                        try {
+                            //给所有人员表插入单位ID
+                            AllUserInfoUpdate allUserInfoUpdate = new AllUserInfoUpdate();
+                            allUserInfoUpdate.setCwrIdnum(info.getCwrIdnum());
+                            allUserInfoUpdate.setUnitId(info.getCwrComid());
+                            allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
+                            if(info.getEafName() != null && !Pattern.compile("[0-9]*").matcher(info.getEafName()).matches()){
+                                info.setLeave(2);
+                                if("进行中".equals(info.getCwrUserStatus())) {
+                                    info.setLeave(1);
+                                }
+                                selectQuartzUnitrInfo.batchInsertUnitrInfo(info.getCwrComid());
+                                ArchivesInfo archivesInfo = new ArchivesInfo();
+                                archivesInfo.setUserid(info.getUserid());
+                                archivesInfo.setCwrPrjid(info.getCwrPrjid());
+                                archivesInfo.setEafId(info.getEafId());
+                                archivesInfo.setCwrUserStatus(info.getCwrUserStatus());
+                                archivesInfo.setCwrComid(info.getCwrComid());
+                                archivesInfo.setEafName(info.getEafName());
+                                archivesInfo.setEafPhone(info.getEafPhone());
+                                archivesInfo.setCwrIdnumType(info.getCwrIdnumType());
+                                archivesInfo.setCwrIdnum(info.getCwrIdnum());
+                                archivesInfo.setCwrWorkClass(info.getCwrWorkClass());
+                                archivesInfo.setCwrWorkName(info.getCwrWorkName());
+                                archivesInfo.setEafCreatetime(info.getEafCreatetime());
+                                archivesInfo.setEafModifier(info.getEafModifier());
+                                archivesInfo.setEafCreator(info.getEafCreator());
+                                archivesInfo.setEafRLeftid(info.getEafRLeftid());
+                                archivesInfo.setLeave(info.getLeave());
+                                archivesInfo.setCwrWorkclassId(info.getCwrWorkclassId());
+                                archivesInfo.setCwrWorktype(info.getCwrWorktype());
+                                archivesInfo.setCwrUserIn(info.getCwrUserIn());
+                                archivesInfo.setCwrUserOut(info.getCwrUserOut());
+                                ArchivesInfo js = archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").first();
+                                if (js == null ){
+                                    Integer i = info.insert();
+                                }else if ("结束".equals(info.getCwrUserStatus())){
+                                    archivesInfo.setLeave(2);
+                                    archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserStatus]=#{cwrUserStatus},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
+                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                            "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
+                                            "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
+                                            "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
+                                            "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn},[cwrUserOut]=#{cwrUserOut}," +
+                                            "[leave]=#{leave}");
+                                }else{
+                                    //不更新状态
+                                    archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserOut]=#{cwrUserOut},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
+                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                            "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
+                                            "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
+                                            "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
+                                            "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn}");
+                                }
                             }
-                            selectQuartzUnitrInfo.batchInsertUnitrInfo(info.getCwrComid());
-                            ArchivesInfo archivesInfo = new ArchivesInfo();
-                            archivesInfo.setUserid(info.getUserid());
-                            archivesInfo.setCwrPrjid(info.getCwrPrjid());
-                            archivesInfo.setEafId(info.getEafId());
-                            archivesInfo.setCwrUserStatus(info.getCwrUserStatus());
-                            archivesInfo.setCwrComid(info.getCwrComid());
-                            archivesInfo.setEafName(info.getEafName());
-                            archivesInfo.setEafPhone(info.getEafPhone());
-                            archivesInfo.setCwrIdnumType(info.getCwrIdnumType());
-                            archivesInfo.setCwrIdnum(info.getCwrIdnum());
-                            archivesInfo.setCwrWorkClass(info.getCwrWorkClass());
-                            archivesInfo.setCwrWorkName(info.getCwrWorkName());
-                            archivesInfo.setEafCreatetime(info.getEafCreatetime());
-                            archivesInfo.setEafModifier(info.getEafModifier());
-                            archivesInfo.setEafCreator(info.getEafCreator());
-                            archivesInfo.setEafRLeftid(info.getEafRLeftid());
-                            archivesInfo.setLeave(info.getLeave());
-                            archivesInfo.setCwrWorkclassId(info.getCwrWorkclassId());
-                            archivesInfo.setCwrWorktype(info.getCwrWorktype());
-                            archivesInfo.setCwrUserIn(info.getCwrUserIn());
-                            archivesInfo.setCwrUserOut(info.getCwrUserOut());
-                            ArchivesInfo js = archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").first();
-                            if (js == null ){
-                                Integer i = info.insert();
-                            }else if ("结束".equals(info.getCwrUserStatus())){
-                                archivesInfo.setLeave(2);
-                                archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserStatus]=#{cwrUserStatus},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
-                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
-                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
-                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
-                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
-                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn},[cwrUserOut]=#{cwrUserOut}," +
-                                        "[leave]=#{leave}");
-                            }else{
-                                //不更新状态
-                                archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserOut]=#{cwrUserOut},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
-                                        "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
-                                        "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
-                                        "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
-                                        "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
-                                        "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn}");
-                            }
-                        }
+                        }catch (Exception e){e.printStackTrace();}
                     }
                     System.out.println("数据插入完成!");
                     timerProfile.setValue(pageIndex);

@@ -9,6 +9,7 @@ import entity.query.annotation.Tablename;
  */
 @Tablename("archives")
 public class ArchivesInfo  extends Queryable<ArchivesInfo> {
+    private  int id;
 
     @Fieldname("eafId")
     private String eafId;
@@ -63,6 +64,15 @@ public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     private String cwrUserIn;
 
     private String cwrUserOut;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getLeave() {
         return leave;
