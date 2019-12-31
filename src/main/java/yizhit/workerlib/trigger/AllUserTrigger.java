@@ -20,6 +20,8 @@ import yizhit.workerlib.entites.ArchivesInfo;
 import yizhit.workerlib.interfaceuilt.QRCodeUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -58,36 +60,39 @@ public class AllUserTrigger {
     @OnInsert
     public void onInsert(List<Map<String, Object>> list, HttpServletRequest request) throws Exception {
             for(Map item : list) {
-                UserModel userModel = new UserModel();
-                String Idnum = (String) item.get("cwrIdnum");
-                userModel.setUsername(Idnum);
-                String passWord = null;
-                if (Idnum.length() < 6) {
-                    passWord = "123456";
-                } else {
-                    passWord = Idnum.substring(Idnum.length() - 6);
-                }
-                userModel.setCreateBy((long) item.get("createBy"));
-                userModel.setCreateOn((Date) item.get("createOn"));
-                userModel.setPath((String)item.get("userPath"));
-                userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
-                userModel.insert();
-                item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
-
-                UserModel js = userModel.where("[username]=#{username}").select("username,password").first();
-                if (js != null){
-                    //把账号和密码拼接起来
-                    String IdumPass = js.getUsername() + js.getPassword();
-                    String token = EncryptionUtil.encryptByAES(IdumPass, aesPublicKey);
-                    String url = "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
-                    String filename = js.getUsername() + ".png";
-                    byte[] binary = QRCodeUtil.creatRrCode(url,width,height);
-                    String path = UploadUtils.upload(qrCodePath ,filename,binary);
-                    item.put("qr_code", path);
-                }
-
+                genQrCode(item, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
             }
             RequestWrapper wrapper = (RequestWrapper) request;
         wrapper.setPostParameter(list);
         }
+
+    public static void genQrCode(Map item, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding,int width,int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
+        UserModel userModel = new UserModel();
+        String Idnum = (String) item.get("cwrIdnum");
+        userModel.setUsername(Idnum);
+        String passWord = null;
+        if (Idnum.length() < 6) {
+            passWord = "123456";
+        } else {
+            passWord = Idnum.substring(Idnum.length() - 6);
+        }
+        userModel.setCreateBy((long) item.get("createBy"));
+        userModel.setCreateOn((Date) item.get("createOn"));
+        userModel.setPath((String)item.get("userPath"));
+        userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
+        userModel.insert();
+        item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
+
+        UserModel js = userModel.where("[username]=#{username}").select("username,password").first();
+        if (js != null){
+            //把账号和密码拼接起来
+            String IdumPass = js.getUsername() + js.getPassword();
+            String token = EncryptionUtil.encryptByAES(IdumPass, aesPublicKey);
+            String url = "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
+            String filename = js.getUsername() + ".png";
+            byte[] binary = QRCodeUtil.creatRrCode(url,width,height);
+            String path = UploadUtils.upload(qrCodePath ,filename,binary);
+            item.put("qr_code", path);
+        }
+    }
 }

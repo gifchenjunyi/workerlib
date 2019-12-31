@@ -15,7 +15,7 @@
         <property name="targetMethod" value="batchInsertProjectInfo"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="ProjectInfoTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ProjectInfoDetail -->
         <property name="jobDetail" ref="springQtzProjectInfofMethod"></property>
 
@@ -35,12 +35,12 @@
         <property name="targetMethod" value="batchInsertArchivesInfo"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="AllUserTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ProjectInfofDetail -->
         <property name="jobDetail" ref="springQtzAllUserInfoMethod"></property>
 
         <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */10 * * * ?"></property>
+        <property name="cronExpression" value="0 */1 * * * ?"></property>
     </bean>
 
 
@@ -96,7 +96,7 @@
         <property name="targetMethod" value="batchInsertArvhivesInfo"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="ArvhivesTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ArvhivesInfoDetail -->
         <property name="jobDetail" ref="springQtzmyArvhivesInfoMethod"></property>
 
@@ -117,7 +117,7 @@
         <property name="targetMethod" value="updateArchivesPhoto"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="ArvhivesPhotoTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ArvhivesInfoPhotoDetail -->
         <property name="jobDetail" ref="springQtzmyArvhivesInfoPhotoMethod"></property>
 
@@ -137,7 +137,7 @@
         <property name="targetMethod" value="batchInsertCheckWorkceInfo"></property>
     </bean>
     <!-- 配置tirgger触发器 -->
-    <bean id="cronTrigger5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="CheckWorkceTrigger5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!-- ArvhivesInfoPhotoDetail -->
         <property name="jobDetail" ref="springQtzmyCheckWorkceInfoMethod"></property>
 
@@ -153,10 +153,11 @@
         <property name="triggers">
             <list>
                  <!--此处指的是上面定时的方法-->
-                <!--&lt;!&ndash;<ref bean="cronTrigger1"></ref>&ndash;&gt;-->
-                <!--<ref bean="cronTrigger2"></ref>-->
-                <!--<ref bean="cronTrigger4"></ref>-->
-                <!--<ref bean="cronTrigger5"></ref>-->
+                <ref bean="ProjectInfoTrigger1"></ref>
+                <!--<ref bean="AllUserTrigger2"></ref>-->
+                <!--<ref bean="ArvhivesTrigger3"></ref>-->
+                <!--<ref bean="ArvhivesPhotoTrigger4"></ref>-->
+                <!--<ref bean="CheckWorkceTrigger5"></ref>-->
             </list>
         </property>
 
