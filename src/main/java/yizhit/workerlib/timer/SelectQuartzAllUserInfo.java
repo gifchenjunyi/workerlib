@@ -81,7 +81,6 @@ public class SelectQuartzAllUserInfo {
             List<AllUserInfo> allUserInfoListByInsert = new ArrayList<AllUserInfo>() ;
 
             for (ProjectInfo projectInfoitem:projectInfoList) {
-
                 timerProfile.setPid(projectInfoitem.getEafId());
                 Optional<TimerProfile> optionals = profiles.stream().filter(a -> a.getPid().equals(projectInfoitem.getEafId())).findFirst();
                 TimerProfile currentTimerProfile = null;
@@ -119,7 +118,7 @@ public class SelectQuartzAllUserInfo {
                 params.put("sign",s);
                 params.put("data",jsonObject.toJSONString());
                 String str = params.toJSONString();
-                System.out.println("params:  " + str);
+                System.out.println("params打印:  " + str);
                 HashMap<String, String> header = new HashMap<String, String>();
                 header.put("Content-Type", "application/json");
                 String result = RequestUtils.post(FinalUtil.url, str, header );
