@@ -5,6 +5,7 @@ import ccait.ccweb.model.UserGroupRoleModel;
 import ccait.ccweb.model.UserModel;
 import ccait.ccweb.utils.EncryptionUtil;
 import ccait.ccweb.utils.FastJsonUtils;
+import ccait.ccweb.utils.UploadUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
@@ -16,7 +17,10 @@ import org.quartz.DisallowConcurrentExecution;
 import org.springframework.beans.factory.annotation.Value;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
+import yizhit.workerlib.interfaceuilt.QRCodeUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
+import yizhit.workerlib.trigger.AllUserTrigger;
+
 import java.util.*;
 
 @DisallowConcurrentExecution
@@ -28,6 +32,19 @@ public class SelectQuartzAllUserInfo {
 
     @Value("${entity.encoding:UTF-8}")
     private String encoding;
+
+    @Value("${entity.upload.workerlib.alluser.qr_code.path}")
+    private String qrCodePath;     //图片地址
+
+    @Value("${qrcode.width}")
+    private int width;
+
+    @Value("${qrcode.height}")
+    private int height;
+
+    @Value("${entity.security.encrypt.AES.publicKey:ccait}")
+    private String aesPublicKey;
+
 
     public void batchInsertArchivesInfo(){
         // 数据库数据
@@ -143,6 +160,41 @@ public class SelectQuartzAllUserInfo {
             }
 
             for(AllUserInfo info : allUserInfoListByInsert) {
+                try {
+                    //给user表插入所有人员信息
+                    UserModel userModel = new UserModel();
+                    userModel.setUsername(info.getCwrIdnum());
+                    String passWord = info.getCwrIdnum();
+                    if (info.getCwrIdnum().length() < 6) {
+                        passWord = "123456";
+                    } else {
+                        passWord = info.getCwrIdnum().substring(info.getCwrIdnum().length() - 6);
+                    }
+                    userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
+                    userModel.setPath("0/1");
+                    userModel.setCreateBy(Long.valueOf(1));
+                    userModel.setCreateOn(new Date());
+
+                    if (userModel.where("[username]=#{cwrIdnum}").exist()) {
+                        userModel.where("[username]=#{username}").update("[username]=#{username}");
+                    } else {
+                        //给UserGroupRole表插入所有人员信息
+                        UserGroupRoleModel userGroupRoleModel = new UserGroupRoleModel();
+                        String userGroupRoleId = UUID.randomUUID().toString().replace("-", "");
+                        userGroupRoleModel.setUserGroupRoleId(userGroupRoleId);
+                        userGroupRoleModel.setRoleId(roleId.getRoleId());
+                        userGroupRoleModel.setPath("0/1");
+                        userGroupRoleModel.setCreateOn(new Date());
+                        userGroupRoleModel.setCreateBy(Long.valueOf(1));
+
+                        info = AllUserTrigger.genQrCode(FastJsonUtils.convert(info, Map.class), userModel,md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height);
+                        userGroupRoleModel.setUserId(info.getUserid());
+                        userGroupRoleModel.insert();
+                    }
+                } catch (Exception e) {
+                    log.error("fail to set user/group/role: =============================================================>");
+                }
+
                 AllUserInfo allUserInfoByUpdate = null;
                 try {
                     allUserInfoByUpdate = new AllUserInfo();
@@ -160,7 +212,6 @@ public class SelectQuartzAllUserInfo {
                     allUserInfoByUpdate.setEafModifier(info.getEafModifier());
                     allUserInfoByUpdate.setCwrStatus(info.getCwrStatus());
                     allUserInfoByUpdate.setEafStatus(info.getEafStatus());
-                    js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     Integer id = null;
                     if (js == null){
                         id = info.insert();
@@ -172,46 +223,7 @@ public class SelectQuartzAllUserInfo {
                                 "[eafStatus]=#{eafStatus}");
                     }
 
-                    ThreadUtils.async(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //给user表插入所有人员信息
-                                UserModel userModel = new UserModel();
-                                userModel.setUsername(info.getCwrIdnum());
-                                String passWord = info.getCwrIdnum();
-                                if (info.getCwrIdnum().length() < 6) {
-                                    passWord = "123456";
-                                } else {
-                                    passWord = info.getCwrIdnum().substring(info.getCwrIdnum().length() - 6);
-                                }
-                                userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
-                                userModel.setPath("0/1");
-                                userModel.setCreateBy(Long.valueOf(1));
-                                userModel.setCreateOn(new Date());
 
-                                if (userModel.where("[username]=#{cwrIdnum}").exist()) {
-                                    userModel.where("[username]=#{username}").update("[username]=#{username}");
-                                } else {
-                                    //给UserGroupRole表插入所有人员信息
-                                    UserGroupRoleModel userGroupRoleModel = new UserGroupRoleModel();
-                                    String userGroupRoleId = UUID.randomUUID().toString().replace("-", "");
-                                    userGroupRoleModel.setUserGroupRoleId(userGroupRoleId);
-                                    userGroupRoleModel.setRoleId(roleId.getRoleId());
-                                    userGroupRoleModel.setPath("0/1");
-                                    userGroupRoleModel.setCreateOn(new Date());
-                                    userGroupRoleModel.setCreateBy(Long.valueOf(1));
-
-                                    Integer userId = userModel.insert();
-                                    userGroupRoleModel.setUserId(userId);
-                                    userGroupRoleModel.insert();
-                                }
-                            }
-                            catch (Exception e) {
-                                log.error("fail to set user/group/role: =============================================================>");
-                            }
-                        }
-                    });
 
                 }catch (Exception e){
                     if (js == null) {

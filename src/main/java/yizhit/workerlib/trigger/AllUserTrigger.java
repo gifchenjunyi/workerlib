@@ -5,6 +5,7 @@ import ccait.ccweb.annotation.Trigger;
 import ccait.ccweb.filter.RequestWrapper;
 import ccait.ccweb.model.UserModel;
 import ccait.ccweb.utils.EncryptionUtil;
+import ccait.ccweb.utils.FastJsonUtils;
 import ccait.ccweb.utils.ImageUtils;
 import ccait.ccweb.utils.UploadUtils;
 import org.apache.tomcat.jni.User;
@@ -60,14 +61,17 @@ public class AllUserTrigger {
     @OnInsert
     public void onInsert(List<Map<String, Object>> list, HttpServletRequest request) throws Exception {
             for(Map item : list) {
-                genQrCode(item, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
+                genQrCode(item, null, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
             }
             RequestWrapper wrapper = (RequestWrapper) request;
         wrapper.setPostParameter(list);
         }
 
-    public static void genQrCode(Map item, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding,int width,int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
-        UserModel userModel = new UserModel();
+    public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding,int width,int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
+        if(userModel == null) {
+            userModel = new UserModel();
+        }
+
         String Idnum = (String) item.get("cwrIdnum");
         userModel.setUsername(Idnum);
         String passWord = null;
@@ -77,10 +81,13 @@ public class AllUserTrigger {
             passWord = Idnum.substring(Idnum.length() - 6);
         }
         userModel.setCreateBy((long) item.get("createBy"));
-        userModel.setCreateOn((Date) item.get("createOn"));
-        userModel.setPath((String)item.get("userPath"));
+        userModel.setCreateOn(new Date());
+        userModel.setPath("0/1");
+        if(item.get("userPath") != null) {
+            userModel.setPath((String)item.get("userPath"));
+        }
         userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
-        userModel.insert();
+        item.put("userid", userModel.insert());
         item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
 
         UserModel js = userModel.where("[username]=#{username}").select("username,password").first();
@@ -94,5 +101,7 @@ public class AllUserTrigger {
             String path = UploadUtils.upload(qrCodePath ,filename,binary);
             item.put("qr_code", path);
         }
+
+        return FastJsonUtils.convert(item, AllUserInfo.class);
     }
 }

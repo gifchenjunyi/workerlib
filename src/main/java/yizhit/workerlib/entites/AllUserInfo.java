@@ -2,6 +2,7 @@ package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
 import entity.query.annotation.DataSource;
+import entity.query.annotation.Exclude;
 import entity.query.annotation.Fieldname;
 import entity.query.annotation.Tablename;
 
@@ -42,6 +43,16 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
     private String cwrStatus;
 
     private String eafStatus;
+
+    @Exclude
+    private long userid;
+
+
+    @Exclude
+    private long qrcode;
+
+
+
 
     public String getEafId() {
         return eafId;
@@ -153,6 +164,22 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
 
     public void setEafStatus(String eafStatus) {
         this.eafStatus = eafStatus;
+    }
+
+    public long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(long userid) {
+        this.userid = userid;
+    }
+
+    public long getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(long qrcode) {
+        this.qrcode = qrcode;
     }
 
 //    private String cwrCertifiDate;
