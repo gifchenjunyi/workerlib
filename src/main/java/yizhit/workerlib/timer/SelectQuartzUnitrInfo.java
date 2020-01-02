@@ -82,11 +82,11 @@ public class SelectQuartzUnitrInfo {
                            unitrInfo.setCwrComStatus(item.getCwrComStatus());
                            unitrInfo.setEafCreator(item.getEafCreator());
                            unitrInfo.setEafCreatetime(item.getEafCreatetime());
-                           unitrInfo.setEafModifier(item.getEafModifier());
+                           unitrInfo.setModifyBy(item.getModifyBy());
                            unitrInfo.setCwrComType(item.getCwrComType());
                            unitrInfo.where("unit_id=#{eafId}").update("[unit_name]=#{cwrComName},[unit_number]=#{cwrCode},[project_license]=#{cwrComCode}," +
                                    "[principal]=#{cwrComFaren},[userPath]=#{cwrComAddr},[status]=#{cwrComStatus}," +
-                                   "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier}," +
+                                   "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{modifyBy}," +
                                    "[modifyOn]=#{eafModifytime},[cwrComType]=#{cwrComType}");
                        }
                    }catch (Exception e){e.printStackTrace();}

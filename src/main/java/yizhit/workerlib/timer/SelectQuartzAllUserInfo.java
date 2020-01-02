@@ -34,6 +34,7 @@ public class SelectQuartzAllUserInfo {
     private String qrCodePath;     //图片地址
 
     @Value("${qrcode.width}")
+
     private int width;
 
     @Value("${qrcode.height}")
@@ -190,6 +191,8 @@ public class SelectQuartzAllUserInfo {
                     }
                 } catch (Exception e) {
                     log.error("fail to set user/group/role: =============================================================>");
+                    log.error("插入所有人员信息出错： =============================================================>");
+                    log.error(new Date());
                 }
 
                 AllUserInfo allUserInfoByUpdate = null;
