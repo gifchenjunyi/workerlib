@@ -3,8 +3,6 @@ package yizhit.workerlib.trigger;
 import ccait.ccweb.annotation.*;
 import ccait.ccweb.filter.RequestWrapper;
 import ccait.ccweb.model.QueryInfo;
-import ccait.ccweb.utils.EncryptionUtil;
-import ccait.ccweb.utils.UploadUtils;
 import entity.query.Datetime;
 import org.springframework.stereotype.Component;
 import yizhit.workerlib.entites.ArchivesInfo;
