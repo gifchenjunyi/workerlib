@@ -3,21 +3,14 @@ package yizhit.workerlib.trigger;
 import ccait.ccweb.annotation.OnInsert;
 import ccait.ccweb.annotation.Trigger;
 import ccait.ccweb.filter.RequestWrapper;
-import ccait.ccweb.model.UserModel;
 import ccait.ccweb.utils.EncryptionUtil;
 import ccait.ccweb.utils.FastJsonUtils;
-import ccait.ccweb.utils.ImageUtils;
 import ccait.ccweb.utils.UploadUtils;
-import org.apache.tomcat.jni.User;
-import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import yizhit.workerlib.entites.AllUserInfo;
-import yizhit.workerlib.entites.ArchivesInfo;
+import yizhit.workerlib.entites.UserModel;
 import yizhit.workerlib.interfaceuilt.QRCodeUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,14 +53,14 @@ public class AllUserTrigger {
      */
     @OnInsert
     public void onInsert(List<Map<String, Object>> list, HttpServletRequest request) throws Exception {
-            for(Map item : list) {
-                genQrCode(item, null, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
-            }
-            RequestWrapper wrapper = (RequestWrapper) request;
-        wrapper.setPostParameter(list);
+        for (Map item : list) {
+            genQrCode(item, null, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
         }
+        RequestWrapper wrapper = (RequestWrapper) request;
+        wrapper.setPostParameter(list);
+    }
 
-    public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding,int width,int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
+    public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding, int width, int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
         if(userModel == null) {
             userModel = new UserModel();
         }

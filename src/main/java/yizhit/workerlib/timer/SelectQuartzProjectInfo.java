@@ -1,6 +1,5 @@
 package yizhit.workerlib.timer;
 
-import ccait.ccweb.model.RoleModel;
 import ccait.ccweb.utils.FastJsonUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -9,10 +8,7 @@ import entity.tool.util.RequestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
-import yizhit.workerlib.entites.Group;
-import yizhit.workerlib.entites.Privilege;
-import yizhit.workerlib.entites.ProjectInfo;
-import yizhit.workerlib.entites.TimerProfile;
+import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
 
