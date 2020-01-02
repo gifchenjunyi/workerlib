@@ -2,12 +2,11 @@ package yizhit.workerlib.trigger;
 
 import ccait.ccweb.annotation.*;
 import ccait.ccweb.filter.RequestWrapper;
-import ccait.ccweb.model.RoleModel;
 import entity.query.Datetime;
 import org.springframework.stereotype.Component;
 import yizhit.workerlib.entites.Group;
-import yizhit.workerlib.entites.InvoLvedproject;
 import yizhit.workerlib.entites.Privilege;
+import yizhit.workerlib.entites.RoleModel;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
