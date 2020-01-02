@@ -18,7 +18,7 @@ public class UnitrInfo extends Queryable<UnitrInfo> {
     @Fieldname("unit_number")
     private String  cwrCode;            //单位编号
 
-    @Fieldname("project_license")//施工单位许可证
+    @Fieldname("project_license")       //施工单位许可证
     private String  cwrComCode;          //社会统一信用代码或组织机构代码
 
     @Fieldname("principal")
@@ -36,8 +36,7 @@ public class UnitrInfo extends Queryable<UnitrInfo> {
     @Fieldname("createOn")
     private String  eafCreatetime;      //创建时间
 
-    @Fieldname("modifyBy")
-    private String  eafModifier;        //更新人
+    private String  modifyBy;           //更新人
 
     @Fieldname("modifyOn")
     private String  eafModifytime;      //更新时间
@@ -116,12 +115,12 @@ public class UnitrInfo extends Queryable<UnitrInfo> {
         this.eafCreatetime = eafCreatetime;
     }
 
-    public String getEafModifier() {
-        return eafModifier;
+    public String getModifyBy() {
+        return modifyBy;
     }
 
-    public void setEafModifier(String eafModifier) {
-        this.eafModifier = eafModifier;
+    public void setModifyBy(String eafModifier) {
+        this.modifyBy = eafModifier;
     }
 
     public String getEafModifytime() {
