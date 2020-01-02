@@ -2,10 +2,12 @@ package yizhit.workerlib.entites;
 
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 import entity.query.annotation.Fieldname;
 import entity.query.annotation.Tablename;
 
 @Tablename("unit")
+@DataSource("workerlib2")
 public class UnitrInfo extends Queryable<UnitrInfo> {
     @Fieldname("unit_id")
     private String  eafId;              //ID

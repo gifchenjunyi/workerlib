@@ -22,7 +22,7 @@ import java.net.MalformedURLException;
 //@EnableZuulProxy
 @EnableWebFlux
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib", "yizhit.workerlib.trigger"},
+@SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib"},
         exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 public class Application {
 

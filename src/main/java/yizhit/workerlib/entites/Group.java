@@ -1,9 +1,11 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 
 import java.io.Serializable;
 
+@DataSource("workerlib2")
 public class Group extends Queryable<Group> implements Serializable {
     private String groupId;         //分组ID
     private String groupName;       //分组名称

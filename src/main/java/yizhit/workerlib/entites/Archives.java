@@ -1,7 +1,9 @@
-package ccait.ccweb.entites;
+package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 
+@DataSource("workerlib2")
 public class Archives extends Queryable<Archives> {
     public String getIdNumber() {
         return id_number;

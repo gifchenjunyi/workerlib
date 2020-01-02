@@ -1,10 +1,12 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 
 /**
  * 历史记录表
  */
+@DataSource("workerlib2")
 public class InvoLvedproject extends Queryable<InvoLvedproject> {
 
    private int id;                  //自增列id
