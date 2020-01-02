@@ -1,9 +1,11 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 import entity.query.annotation.Tablename;
 
 @Tablename("timer_profile")
+@DataSource("workerlib2")
 public class TimerProfile extends Queryable<TimerProfile> {
     private int id;
     private String key;

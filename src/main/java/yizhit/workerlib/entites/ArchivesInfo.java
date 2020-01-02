@@ -1,6 +1,7 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 import entity.query.annotation.Fieldname;
 import entity.query.annotation.Tablename;
 
@@ -8,6 +9,7 @@ import entity.query.annotation.Tablename;
  * 工程下的用户信息表
  */
 @Tablename("archives")
+@DataSource("workerlib2")
 public class ArchivesInfo  extends Queryable<ArchivesInfo> {
     private  int id;
 

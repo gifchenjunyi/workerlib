@@ -25,7 +25,7 @@ public class SelectQuartzProjectInfo {
 
     public  void batchInsertProjectInfo(){
         // 数据库数据
-        System.out.println("查询所有工程工作正在进入处理...");
+        log.info("查询所有工程工作正在进入处理...");
         JSONObject params = new JSONObject();
         JSONArray array = null;
         int pageIndex = 0;
