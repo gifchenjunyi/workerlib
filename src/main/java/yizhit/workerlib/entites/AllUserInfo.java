@@ -44,14 +44,20 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
 
     private String eafStatus;
 
+    @Fieldname("qr_code")
+    private String qr_code;
+
     @Exclude
     private long userid;
 
 
-    @Exclude
-    private long qrcode;
+    public String getQrCode() {
+        return qr_code;
+    }
 
-
+    public void setQrcode(String qr_code) {
+        this.qr_code = qr_code;
+    }
 
 
     public String getEafId() {
@@ -174,13 +180,6 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
         this.userid = userid;
     }
 
-    public long getQrcode() {
-        return qrcode;
-    }
-
-    public void setQrcode(long qrcode) {
-        this.qrcode = qrcode;
-    }
 
 //    private String cwrCertifiDate;
 //    private String eafQfjg;

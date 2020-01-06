@@ -44,7 +44,8 @@ public class AllUserTrigger {
     @Value("${entity.encoding:UTF-8}")
     private String encoding;
 
-
+    @Value("${qrcode.server}")      //IP
+    private String qrcodeServer ;
     /***
      * 新增数据事件
      * @param list （提交的数据）
@@ -54,13 +55,13 @@ public class AllUserTrigger {
     @OnInsert
     public void onInsert(List<Map<String, Object>> list, HttpServletRequest request) throws Exception {
         for (Map item : list) {
-            genQrCode(item, null, md5PublicKey, aesPublicKey, qrCodePath, encoding,width,height);
+            genQrCode(item, null, md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height, qrcodeServer, true);
         }
         RequestWrapper wrapper = (RequestWrapper) request;
         wrapper.setPostParameter(list);
     }
 
-    public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding, int width, int height) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
+    public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding, int width, int height, String server, boolean formTrigger) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
         if(userModel == null) {
             userModel = new UserModel();
         }
@@ -73,22 +74,33 @@ public class AllUserTrigger {
         } else {
             passWord = Idnum.substring(Idnum.length() - 6);
         }
-        userModel.setCreateBy((long) item.get("createBy"));
+
+        if(item.get("createBy") == null) {
+            userModel.setCreateBy(Long.valueOf(1));
+        }
+        else {
+            userModel.setCreateBy((long) item.get("createBy"));
+        }
+
         userModel.setCreateOn(new Date());
         userModel.setPath("0/1");
         if(item.get("userPath") != null) {
             userModel.setPath((String)item.get("userPath"));
         }
         userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
-        item.put("userid", userModel.insert());
-        item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
-
+        Integer userid = userModel.insert();
+        if(!formTrigger) {
+            item.put("userid", userid);
+        }
+       if (item.get("eafId") == null){
+           item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
+       }
         UserModel js = userModel.where("[username]=#{username}").select("username,password").first();
         if (js != null){
             //把账号和密码拼接起来
             String IdumPass = js.getUsername() + js.getPassword();
             String token = EncryptionUtil.encryptByAES(IdumPass, aesPublicKey);
-            String url = "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
+            String url = server + "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
             String filename = js.getUsername() + ".png";
             byte[] binary = QRCodeUtil.creatRrCode(url,width,height);
             String path = UploadUtils.upload(qrCodePath ,filename,binary);
