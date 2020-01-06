@@ -4,14 +4,14 @@ import ccait.ccweb.utils.FastJsonUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
-import entity.query.annotation.Fieldname;
 import entity.tool.util.RequestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 
 @DisallowConcurrentExecution
 public class SelectQuartzArvhivesInfo {
+    private static final Logger log = LogManager.getLogger(SelectQuartzProjectInfo.class);
+
     public void batchInsertArvhivesInfo(){
         // 数据库数据
         System.out.println("查询工程员工表工作正在进入处理...");
@@ -90,6 +92,35 @@ public class SelectQuartzArvhivesInfo {
                             allUserInfoUpdate.setCwrIdnum(info.getCwrIdnum());
                             allUserInfoUpdate.setUnitId(info.getCwrComid());
                             allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
+
+//                            //给所有工种表导入工种信息
+                            ProjectWorkType projectWorkType = new ProjectWorkType();
+                            projectWorkType.setEafId(info.getUserid());
+                            projectWorkType.setProjectId(info.getCwrPrjid());
+                            projectWorkType.setWorkType(info.getCwrWorkName());
+                            projectWorkType.setCreateBy("1");
+                            projectWorkType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                            projectWorkType.setUserPath("0/1");
+                            ProjectWorkType jsEafid = projectWorkType.where("[eafId] = #{eafId}").first();
+                            if (jsEafid == null){
+                                projectWorkType.insert();
+                            }else{
+                                projectWorkType.where("[eafId]=#{eafId}").and("[projectId]=#{projectId}").update("[workType]=#{workType}");
+                            }
+
+                            //给工种表导入工种信息
+                            WorkType workType = new WorkType();
+                            workType.setEafId(info.getUserid());
+                            workType.setWorkType(info.getCwrWorkName());
+                            workType.setCreateBy("1");
+                            workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                            WorkType jstype_id  = workType.where("[eafId] = #{eafId}").first();
+                            if (jstype_id == null){
+                                workType.insert();
+                            }else{
+                                workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
+                            }
+
                             if(info.getEafName() != null && !Pattern.compile("[0-9]*").matcher(info.getEafName()).matches()){
                                 info.setLeave(2);
                                 if("进行中".equals(info.getCwrUserStatus())) {
@@ -123,7 +154,7 @@ public class SelectQuartzArvhivesInfo {
                                 }else if ("结束".equals(info.getCwrUserStatus())){
                                     archivesInfo.setLeave(2);
                                     archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserStatus]=#{cwrUserStatus},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
-                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
                                             "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
                                             "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
                                             "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
@@ -132,18 +163,21 @@ public class SelectQuartzArvhivesInfo {
                                 }else{
                                     //不更新状态
                                     archivesInfo.where("[archives_id]=#{userid}").and("[project_id]=#{cwrPrjid}").update("[cwrUserOut]=#{cwrUserOut},[eafId]=#{eafId},[unit_id]=#{cwrComid}," +
-                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumTyp]=#{cwrIdnumTyp}," +
+                                            "[name]=#{eafName},[phone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
                                             "[id_number]=#{cwrIdnum},[CwrWorkClass]=#{CwrWorkClass},[work_type]=#{CwrWorkName}," +
                                             "[createOn]=#{eafCreatetime},[modifyBy]=#{eafModifier},[modifyOn]=#{eafModifytime}," +
                                             "[createBy]=#{eafCreator},[eafRLeftid]=#{eafRLeftid},[cwrWorkclassId]=#{cwrWorkclassId}," +
                                             "[cwrWorktype]=#{cwrWorktype},[cwrUserIn]=#{cwrUserIn}");
-                                }
+                                    }
                             }
-                        }catch (Exception e){e.printStackTrace();}
+                        }catch (Exception e){
+                            log.error("插入项目下的人员信息出错： =============================================================>",e);
+                            log.error(new Date());
+                        }
                     }
-                    System.out.println("数据插入完成!");
                     timerProfile.setValue(pageIndex);
                     timerProfile.where("[key]=#{key}").and("[pid]=#{pid}").update("[value]=#{value}");
+                    System.out.println("数据插入完成!");
                 }else {
                     System.out.println("error:  " + json.toJSONString());
                 }

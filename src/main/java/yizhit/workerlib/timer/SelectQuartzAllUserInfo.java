@@ -43,6 +43,9 @@ public class SelectQuartzAllUserInfo {
     @Value("${entity.security.encrypt.AES.publicKey:ccait}")
     private String aesPublicKey;
 
+    @Value("${qrcode.server}")      //IP
+    private String server ;
+
 
     public void batchInsertArchivesInfo(){
         // 数据库数据
@@ -68,15 +71,15 @@ public class SelectQuartzAllUserInfo {
             privilege.setPrivilegeId(privilegeId);
             privilege.setRoleId(roleId.getRoleId());
             privilege.setCanAdd(1);
-            privilege.setCanDelete(1);
-            privilege.setCanUpdate(1);
+            privilege.setCanDelete(0);
+            privilege.setCanUpdate(0);
             privilege.setCanView(1);
             privilege.setCanDownload(1);
             privilege.setCanPreviewDoc(1);
             privilege.setCanUpload(1);
             privilege.setCanExport(1);
-            privilege.setCanImport(1);
-            privilege.setCanDecrypt(1);
+            privilege.setCanImport(0);
+            privilege.setCanDecrypt(0);
             privilege.setCanList(1);
             privilege.setCanQuery(1);
             privilege.setScope(5);
@@ -185,13 +188,13 @@ public class SelectQuartzAllUserInfo {
                         userGroupRoleModel.setCreateOn(new Date());
                         userGroupRoleModel.setCreateBy(Long.valueOf(1));
 
-                        info = AllUserTrigger.genQrCode(FastJsonUtils.convert(info, Map.class), userModel,md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height);
+                        info = AllUserTrigger.genQrCode(FastJsonUtils.convert(info, Map.class), userModel,md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height,server,false);
                         userGroupRoleModel.setUserId(info.getUserid());
                         userGroupRoleModel.insert();
                     }
                 } catch (Exception e) {
                     log.error("fail to set user/group/role: =============================================================>");
-                    log.error("插入所有人员信息出错： =============================================================>");
+                    log.error("插入所有人员信息出错： =============================================================>",e);
                     log.error(new Date());
                 }
 
@@ -212,7 +215,9 @@ public class SelectQuartzAllUserInfo {
                     allUserInfoByUpdate.setEafModifier(info.getEafModifier());
                     allUserInfoByUpdate.setCwrStatus(info.getCwrStatus());
                     allUserInfoByUpdate.setEafStatus(info.getEafStatus());
+                    allUserInfoByUpdate.setQrcode(info.getQrCode());
                     Integer id = null;
+                    js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     if (js == null){
                         id = info.insert();
                     }else {
@@ -220,7 +225,7 @@ public class SelectQuartzAllUserInfo {
                                 "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
                                 "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
                                 "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
-                                "[eafStatus]=#{eafStatus}");
+                                "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code}");
                     }
 
 
