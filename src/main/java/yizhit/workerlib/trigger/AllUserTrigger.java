@@ -61,6 +61,7 @@ public class AllUserTrigger {
         wrapper.setPostParameter(list);
     }
 
+
     public static AllUserInfo genQrCode(Map item, UserModel userModel, String md5PublicKey, String aesPublicKey, String qrCodePath, String encoding, int width, int height, String server, boolean formTrigger) throws NoSuchAlgorithmException, java.sql.SQLException, IOException {
         if(userModel == null) {
             userModel = new UserModel();
