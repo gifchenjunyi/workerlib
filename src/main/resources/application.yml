@@ -2,6 +2,7 @@
 # 1.ccweb配置
 
 entity:
+  datasource: workerlib #可通过url的{datasource}参数访问到该数据库，没有在此设置的environment不能通过url访问到
   queryable:
     configFile: db-config.xml #数据库配置路径
   ignoreTotalCount: true #忽略查询总数
@@ -81,6 +82,11 @@ entity:
 
   upload: #上传设置
     workerlib: #库名
+      cultivate_video: #表名
+        file: #字段名
+          maxSize: 200 #上传文件最大尺寸，单位: MB
+          mimeType: gif, jpg, png, jpeg, mp4, ogg, webm #允许上传的文件格式
+          path: /home/workerlib-ui/upload/cultivate
       alluser: #表名
         qr_code: #字段名
           maxSize: 5 #上传文件最大尺寸，单位: MB
@@ -136,8 +142,8 @@ entity:
           path: /home/workerlib-ui/upload #上传路径的绝对路径
         video:
           maxSize: 200 #上传文件最大尺寸，单位: MB
-          mimeType: avi, mov, rmvb, rm, flv, mp4, 3GP #允许上传的文件格式
-          path: /home/workerlib-ui/upload/video #上传路径的绝对路径
+          mimeType: mp4, ogg, webm #允许上传的文件格式
+          path: /home/workerlib-ui/upload/courseware/video #上传路径的绝对路径
       lecturer: #表名
         photo:
           maxSize: 5 #上传文件最大尺寸，单位: MB
@@ -151,9 +157,6 @@ entity:
       watermark: watermark.png #水印
 
   enableFlux: true   #是否开启web异步响应流
-
-  #设置开放的数据源，对应db-config.xml的environment id
-  datasource: workerlib #可通过url的{datasource}参数访问到该数据库，没有在此设置的environment不能通过url访问到
 
   #  ip:
   #    whiteList:  #IP白名单
