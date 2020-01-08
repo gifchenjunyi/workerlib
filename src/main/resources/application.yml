@@ -156,7 +156,7 @@ entity:
       scalRatio: 50 #缩放比率(百分比)
       watermark: watermark.png #水印
 
-  enableFlux: false   #是否开启web异步响应流
+  enableFlux: true   #是否开启web异步响应流
 
   #  ip:
   #    whiteList:  #IP白名单
