@@ -215,7 +215,15 @@ public class SelectQuartzAllUserInfo {
                     allUserInfoByUpdate.setEafModifier(info.getEafModifier());
                     allUserInfoByUpdate.setCwrStatus(info.getCwrStatus());
                     allUserInfoByUpdate.setEafStatus(info.getEafStatus());
-                    allUserInfoByUpdate.setQrcode(info.getQrCode());
+                    allUserInfoByUpdate.setQrCode(info.getQrCode());
+                    allUserInfoByUpdate.setYear(Integer.parseInt(info.getCwrIdnum().substring(6,10)));
+                    allUserInfoByUpdate.setMonth(Integer.parseInt(info.getCwrIdnum().substring(10,12)));
+                    int Sex = Integer.parseInt(info.getCwrIdnum().substring(16,17));
+                    if (Sex / 2 == 0){
+                        allUserInfoByUpdate.setSex(2);
+                    }else {
+                        allUserInfoByUpdate.setSex(1);
+                    }
                     Integer id = null;
                     js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     if (js == null){
@@ -225,7 +233,8 @@ public class SelectQuartzAllUserInfo {
                                 "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
                                 "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
                                 "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
-                                "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code}");
+                                "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code},[year]=#{year},[month]=#{month}," +
+                                "[Sex]=#{Sex}");
                     }
 
 

@@ -123,7 +123,7 @@ entity:
       scalRatio: 50 #缩放比率(百分比)
       watermark: watermark.png #水印
 
-  enableFlux: true   #是否开启web异步响应流
+  enableFlux: false   #是否开启web异步响应流
 
   #设置开放的数据源，对应db-config.xml的environment id
   datasource: workerlib #可通过url的{datasource}参数访问到该数据库，没有在此设置的environment不能通过url访问到
@@ -157,7 +157,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/ #注册中心
 server:
-  port: 8080 #端口号
+  port: 6666 #端口号
 
 feign:
   hystrix:
