@@ -93,7 +93,7 @@ public class SelectQuartzArvhivesInfo {
                             allUserInfoUpdate.setUnitId(info.getCwrComid());
                             allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
 
-//                            //给所有工种表导入工种信息
+                            //给所有工种表导入工种信息
                             ProjectWorkType projectWorkType = new ProjectWorkType();
                             projectWorkType.setEafId(info.getUserid());
                             projectWorkType.setProjectId(info.getCwrPrjid());
@@ -196,8 +196,10 @@ public class SelectQuartzArvhivesInfo {
     public void updateArchivesPhoto(){
         AllUserInfo info = new AllUserInfo();
         try {
+            log.info("正在执行： =============================================================>");
             List<AllUserInfo> infoList = info.select("cwrIdnum,cwrPhoto").query();
             for (AllUserInfo userInfo:infoList) {
+                log.info("查找插入： =============================================================>");
                 ArchivesInfoUpdate archivesInfo = new ArchivesInfoUpdate();
                 archivesInfo.setCwrIdnum(userInfo.getCwrIdnum());
                 archivesInfo.setPhoto(userInfo.getCwrPhoto());
@@ -205,6 +207,7 @@ public class SelectQuartzArvhivesInfo {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("出错： =============================================================>",e);
         }
     }
 

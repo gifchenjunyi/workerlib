@@ -40,6 +40,12 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
 
     private String eafModifier;     //更新人
 
+    private int year;            //年
+
+    private int month;           //月
+
+    private int Sex;             //性别
+
     private String cwrStatus;
 
     private String eafStatus;
@@ -50,15 +56,37 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
     @Exclude
     private long userid;
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getSex() {
+        return Sex;
+    }
+
+    public void setSex(int sex) {
+        Sex = sex;
+    }
 
     public String getQrCode() {
         return qr_code;
     }
 
-    public void setQrcode(String qr_code) {
+    public void setQrCode(String qr_code) {
         this.qr_code = qr_code;
     }
-
 
     public String getEafId() {
         return eafId;

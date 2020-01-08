@@ -40,7 +40,7 @@
         <property name="jobDetail" ref="springQtzAllUserInfoMethod"></property>
 
         <!-- cron表达式，执行时间  每6分钟执行一次 -->
-        <property name="cronExpression" value="0 */2 * * * ?"></property>
+        <property name="cronExpression" value="0 */10 * * * ?"></property>
     </bean>
 
 
@@ -122,7 +122,7 @@
         <property name="jobDetail" ref="springQtzmyArvhivesInfoPhotoMethod"></property>
 
         <!-- cron表达式，执行时间  每10分钟执行一次 -->
-        <property name="cronExpression" value="0 0/1 * * * ? * "></property>
+        <property name="cronExpression" value="0 */10 * * * ?"></property>
     </bean>
 
 
