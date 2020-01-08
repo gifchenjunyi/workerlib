@@ -88,7 +88,6 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
         this.qr_code = qr_code;
     }
 
-
     public String getEafId() {
         return eafId;
     }

@@ -236,9 +236,6 @@ public class SelectQuartzAllUserInfo {
                                 "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code},[year]=#{year},[month]=#{month}," +
                                 "[Sex]=#{Sex}");
                     }
-
-
-
                 }catch (Exception e){
                     if (js == null) {
                         log.error("fail to insert: =============================================================>");

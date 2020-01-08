@@ -93,7 +93,7 @@ public class SelectQuartzArvhivesInfo {
                             allUserInfoUpdate.setUnitId(info.getCwrComid());
                             allUserInfoUpdate.where("[cwrIdnum]=#{cwrIdnum}").update("[unit_id]=#{unitId}");
 
-//                            //给所有工种表导入工种信息
+                            //给所有工种表导入工种信息
                             ProjectWorkType projectWorkType = new ProjectWorkType();
                             projectWorkType.setEafId(info.getUserid());
                             projectWorkType.setProjectId(info.getCwrPrjid());
