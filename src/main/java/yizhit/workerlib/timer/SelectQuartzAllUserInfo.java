@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
+import entity.tool.util.StringUtils;
 import entity.tool.util.ThreadUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -216,14 +217,17 @@ public class SelectQuartzAllUserInfo {
                     allUserInfoByUpdate.setCwrStatus(info.getCwrStatus());
                     allUserInfoByUpdate.setEafStatus(info.getEafStatus());
                     allUserInfoByUpdate.setQrCode(info.getQrCode());
-                    allUserInfoByUpdate.setYear(Integer.parseInt(info.getCwrIdnum().substring(6,10)));
-                    allUserInfoByUpdate.setMonth(Integer.parseInt(info.getCwrIdnum().substring(10,12)));
-                    int Sex = Integer.parseInt(info.getCwrIdnum().substring(16,17));
-                    if (Sex / 2 == 0){
-                        allUserInfoByUpdate.setSex(2);
-                    }else {
-                        allUserInfoByUpdate.setSex(1);
+                    if(StringUtils.isNotEmpty(info.getCwrIdnum())) {
+                        allUserInfoByUpdate.setYear(Integer.parseInt(info.getCwrIdnum().substring(6, 10)));
+                        allUserInfoByUpdate.setMonth(Integer.parseInt(info.getCwrIdnum().substring(10,12)));
+                        int Sex = Integer.parseInt(info.getCwrIdnum().substring(16,17));
+                        if (Sex / 2 == 0){
+                            allUserInfoByUpdate.setSex(2);
+                        }else {
+                            allUserInfoByUpdate.setSex(1);
+                        }
                     }
+
                     Integer id = null;
                     js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     if (js == null){
