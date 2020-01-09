@@ -29,22 +29,22 @@ entity:
     archives.eafId: UUID_RANDOM
     alluser.eafId: UUID_RANDOM
 
-  security: #安全配置选项
+  security:
     encrypt:
       MD5: #MD5加密配置
         fields: user.password #需要使用MD5加密的字段，逗号分隔
         publicKey: ccait@2019 #MD5加密公钥
       AES: #AES加密配置
         publicKey: ccait@2019 #AES加密公钥
-    admin: #超级管理员账号密码(必填)
+    admin:
       username: admin
       password: admin
 
-  validation: #数据提交字段校验器，以下email、mobile为字段名，也可以精确校验:[表名].[字段名]
+  validation:
     email: ^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$
     mobile: ^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$
 
-  formatter: #查询结果输出格式，createOn、modifyOn，也可以精确格式化:[表名].[字段名]
+  formatter:
     createOn: yyyy-MM-dd HH:mm
     modifyOn: yyyy-MM-dd HH:mm
     start_time: yyyy-MM-dd HH:mm
@@ -55,7 +55,7 @@ entity:
     appraise_time: yyyy-MM-dd HH:mm
 
   table:
-    reservedField: #系统保留字段(必填)
+    reservedField:
       userPath: userPath #创建者所属路径，体现父子关系，用于like查询
       createOn: createOn #数据创建时间
       createBy: createBy #数据创建者
@@ -80,10 +80,10 @@ entity:
       user:
         password: hidden
 
-  upload: #上传设置
-    workerlib: #库名
-      cultivate_video: #表名
-        file: #字段名
+  upload:
+    workerlib:
+      cultivate_video:
+        file:
           maxSize: 200 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg, mp4, ogg, webm #允许上传的文件格式
           path: /home/workerlib-ui/upload/cultivate
@@ -97,8 +97,12 @@ entity:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload/qrcode
-      alluser: #表名
-        photo: #字段名
+      alluser:
+        qr_code:
+          maxSize: 5 #上传文件最大尺寸，单位: MB
+          mimeType: gif, jpg, png, jpeg #允许上传的文件格式
+          path: /home/workerlib-ui/upload/qrcode
+        photo:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
@@ -114,18 +118,18 @@ entity:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
-      worktype: #表名
+      worktype:
         certificate:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
-      appraise_photo: #表名
-        photo: #字段名
+      appraise_photo:
+        photo:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
-      archives: #表名
-        photo: #字段名
+      archives:
+        photo:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
@@ -141,7 +145,7 @@ entity:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
-      courseware: #表名
+      courseware:
         cover_picture:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
@@ -150,14 +154,14 @@ entity:
           maxSize: 200 #上传文件最大尺寸，单位: MB
           mimeType: mp4, ogg, webm #允许上传的文件格式
           path: /home/workerlib-ui/upload/courseware/video #上传路径的绝对路径
-      lecturer: #表名
+      lecturer:
         photo:
           maxSize: 5 #上传文件最大尺寸，单位: MB
           mimeType: gif, jpg, png, jpeg #允许上传的文件格式
           path: /home/workerlib-ui/upload #上传路径的绝对路径
 
-  download: #下载设置
-    thumb:  #预览的缩略图
+  download:
+    thumb:
       fixedWidth: 200 #固定宽度
       scalRatio: 50 #缩放比率(百分比)
       watermark: watermark.png #水印
@@ -173,11 +177,11 @@ entity:
     defaultMatch: match_all
     timeout: 10000
     url: 127.0.0.1:9200;127.0.0.1:9500 #分号分隔
-    indexs: #索引设置
+    indexs:
       user_username: user.username #key＝indexname, value=[{tablename}].{fieldname}
-    highlight: #高亮设置
-      user: #表名
-        fields: username #字段名，逗号分隔
+    highlight:
+      user:
+        fields: username ，逗号分隔
         fragmentSize: 200
         preTags: <em>
         postTags: </em>
@@ -206,11 +210,11 @@ spring:
     druid:
       test-on-borrow: true
       test-while-idle: true
-  zipkin: #分布式链路配置
+  zipkin:
     base-url: http://localhost:9411
   thymeleaf:
     cache: false
-  devtools: #dev tools
+  devtools:
     livereload:
       enabled: true
   session:
@@ -223,7 +227,7 @@ spring:
     async:
       request-timeout: 5000
     static-path-pattern: /** #静态文件请求匹配方式
-  resources: #修改默认的静态寻址资源目录
+  resources:
     static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
 
   redis:
