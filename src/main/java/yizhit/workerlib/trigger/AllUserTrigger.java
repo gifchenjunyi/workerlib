@@ -104,7 +104,7 @@ public class AllUserTrigger {
             String url = server + "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
             String filename = js.getUsername() + ".png";
             byte[] binary = QRCodeUtil.creatRrCode(url,width,height);
-            String path = UploadUtils.upload(qrCodePath ,filename,binary);
+            String path = UploadUtils.upload(qrCodePath + "/workerlib/people/code" ,filename,binary);
             item.put("qr_code", path);
         }
 
