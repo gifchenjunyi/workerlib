@@ -30,7 +30,7 @@ public class SelectQuartzAllUserInfo {
     @Value("${entity.encoding:UTF-8}")
     private String encoding;
 
-    @Value("${entity.upload.workerlib.alluser.qr_code.path}")
+    @Value("${entity.upload.workerlib.people.code.path}")
     private String qrCodePath;     //图片地址
 
     @Value("${qrcode.width}")
