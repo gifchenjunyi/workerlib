@@ -177,7 +177,7 @@ public class SelectQuartzAllUserInfo {
                     userModel.setCreateBy(Long.valueOf(1));
                     userModel.setCreateOn(new Date());
 
-                    if (userModel.where("[username]=#{cwrIdnum}").exist()) {
+                    if (userModel.where("[username]=#{username}").exist()) {
                         userModel.where("[username]=#{username}").update("[username]=#{username}");
                     } else {
                         //给UserGroupRole表插入所有人员信息
