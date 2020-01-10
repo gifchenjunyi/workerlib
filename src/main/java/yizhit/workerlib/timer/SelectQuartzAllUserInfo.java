@@ -221,7 +221,7 @@ public class SelectQuartzAllUserInfo {
                         allUserInfoByUpdate.setYear(Integer.parseInt(info.getCwrIdnum().substring(6, 10)));
                         allUserInfoByUpdate.setMonth(Integer.parseInt(info.getCwrIdnum().substring(10,12)));
                         int Sex = Integer.parseInt(info.getCwrIdnum().substring(16,17));
-                        if (Sex / 2 == 0){
+                        if (Sex / 2 != 0){
                             allUserInfoByUpdate.setSex(2);
                         }else {
                             allUserInfoByUpdate.setSex(1);
