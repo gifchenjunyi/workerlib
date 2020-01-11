@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import yizhit.workerlib.entites.TimerProfile;
 import yizhit.workerlib.entites.UnitrInfo;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SelectQuartzUnitrInfo {
+    private static final Logger log = LogManager.getLogger(SelectQuartzAllUserInfo.class);
     public void batchInsertUnitrInfo(String uid){
         // 数据库数据
         System.out.println("查询公司表工作正在进入处理...");
@@ -26,15 +29,8 @@ public class SelectQuartzUnitrInfo {
         try {
             StringBuilder sb = new StringBuilder();
             JSONObject jsonObject = new JSONObject();
-//            TimerProfile timerProfile = new TimerProfile();
-//            timerProfile.setKey("unit");
-//            timerProfile = timerProfile.where("[key]=#{key}").first();
-//            if(timerProfile!=null) {
-//                pageIndex = timerProfile.getValue();
-//            }
             //拼接密文
             jsonObject.put("comid", uid);
-//            jsonObject.put("pageNum", pageIndex);
             String formatDate = Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss");
             sb.append("appid=appid1").append("&data="+jsonObject.toJSONString()).append("&format=json").append("&method=company.info").append("&nonce=123456").append("&timestamp="+formatDate).append("&version=1.0").append("&appsecret=123456");
             String hex = sb.toString().toLowerCase();
@@ -52,7 +48,7 @@ public class SelectQuartzUnitrInfo {
             params.put("sign",s);
             params.put("data",jsonObject.toJSONString());
             String str = params.toJSONString();
-            System.out.println("params:  " + str);
+            log.info("params:  " + str);
             HashMap<String, String> header = new HashMap<String, String>();
             header.put("Content-Type", "application/json");
             String result = RequestUtils.post(FinalUtil.url, str, header );
@@ -89,11 +85,9 @@ public class SelectQuartzUnitrInfo {
                                    "[createBy]=#{eafCreator},[createOn]=#{eafCreatetime},[modifyBy]=#{modifyBy}," +
                                    "[modifyOn]=#{eafModifytime},[cwrComType]=#{cwrComType}");
                        }
-                   }catch (Exception e){e.printStackTrace();}
+                   }catch (Exception eq){eq.printStackTrace();}
                 }
                 System.out.println("数据插入完成!");
-//                timerProfile.setValue(pageIndex);
-//                timerProfile.where("[key]=#{key}").update("[value]=#{value}");
             }
             else {
                 System.out.println("error:  " + result);
