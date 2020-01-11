@@ -17,16 +17,17 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
     private int canUpdate;
     private int canView;
     private int canDownload;
-    private int canPreviewDoc;
+    private int canPreview;
     private int canUpload;
     private int canExport;
+    private int canPlayVideo;
     private int canImport;
     private int canDecrypt;
     private int canList;
     private int canQuery;
     private int scope;
     private String userPath;
-    private int modifyTime;
+    private int modifyOn;
     private int modifyBy;
     private String createOn;
     private int createBy;
@@ -104,12 +105,12 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
         this.canDownload = canDownload;
     }
 
-    public int getCanPreviewDoc() {
-        return canPreviewDoc;
+    public int getCanPreview() {
+        return canPreview;
     }
 
-    public void setCanPreviewDoc(int canPreviewDoc) {
-        this.canPreviewDoc = canPreviewDoc;
+    public void setCanPreview(int canPreview) {
+        this.canPreview = canPreview;
     }
 
     public int getCanUpload() {
@@ -176,12 +177,12 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
         this.userPath = userPath;
     }
 
-    public int getModifyTime() {
-        return modifyTime;
+    public int getModifyOn() {
+        return modifyOn;
     }
 
-    public void setModifyTime(int modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setModifyTime(int modifyOn) {
+        this.modifyOn = modifyOn;
     }
 
     public int getModifyBy() {
@@ -209,5 +210,11 @@ public class Privilege extends Queryable<Privilege> implements Serializable {
     }
 
 
+    public int getCanPlayVideo() {
+        return canPlayVideo;
+    }
 
+    public void setCanPlayVideo(int canPlayVideo) {
+        this.canPlayVideo = canPlayVideo;
+    }
 }

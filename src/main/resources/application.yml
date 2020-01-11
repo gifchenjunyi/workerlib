@@ -163,7 +163,7 @@ entity:
   download:
     thumb:
       fixedWidth: 200 #固定宽度
-      scalRatio: 50 #缩放比率(百分比)
+      scalRatio: 0 #缩放比率(百分比)
       watermark: watermark.png #水印
 
   enableFlux: true   #是否开启web异步响应流

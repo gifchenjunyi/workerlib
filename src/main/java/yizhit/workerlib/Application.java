@@ -41,7 +41,7 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
 
-        System.out.println("Workerlib has been started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.info("Workerlib has been started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public static boolean isUat()
