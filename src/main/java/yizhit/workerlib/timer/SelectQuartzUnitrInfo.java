@@ -87,7 +87,6 @@ public class SelectQuartzUnitrInfo {
                        }
                    }catch (Exception eq){eq.printStackTrace();}
                 }
-                System.out.println("数据插入完成!");
             }
             else {
                 System.out.println("error:  " + result);
