@@ -96,10 +96,11 @@ public class AllUserTrigger {
        if (item.get("eafId") == null){
            item.put("eafId", UUID.randomUUID().toString().replace("-", ""));
        }
-        UserModel js = userModel.where("[username]=#{username}").select("username,password").first();
+        UserModel js = userModel.where("[username]=#{username}").first();
         if (js != null){
             //把账号和密码拼接起来
-            String IdumPass = js.getUsername() + js.getPassword();
+            String vaildCode = EncryptionUtil.md5(EncryptionUtil.encryptByAES(js.getId().toString(), js.getUsername() + aesPublicKey), "UTF-8");
+            String IdumPass = js.getUsername() + vaildCode;
             String token = EncryptionUtil.encryptByAES(IdumPass, aesPublicKey);
             String url = server + "/mobile/details?token=" + token + "&eafid=" + item.get("eafId");
             String filename = js.getUsername() + ".png";

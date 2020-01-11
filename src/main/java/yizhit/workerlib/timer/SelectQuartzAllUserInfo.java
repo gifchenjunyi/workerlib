@@ -23,7 +23,7 @@ import java.util.*;
 
 @DisallowConcurrentExecution
 public class SelectQuartzAllUserInfo {
-    private static final Logger log = LogManager.getLogger(SelectQuartzProjectInfo.class);
+    private static final Logger log = LogManager.getLogger(SelectQuartzAllUserInfo.class);
 
     @Value("${entity.security.encrypt.MD5.publicKey:ccait}")
     private String md5PublicKey;
@@ -90,7 +90,7 @@ public class SelectQuartzAllUserInfo {
             if (rolejs == null){
                 privilege.insert();
             }else{
-                System.out.println("角色已存在");
+                log.info("角色已存在");
             }
 
             TimerProfile timerProfile = new TimerProfile();
@@ -137,7 +137,7 @@ public class SelectQuartzAllUserInfo {
                 params.put("sign",s);
                 params.put("data",jsonObject.toJSONString());
                 String str = params.toJSONString();
-                System.out.println("params打印:  " + str);
+                log.info("params打印:  " + str);
                 HashMap<String, String> header = new HashMap<String, String>();
                 header.put("Content-Type", "application/json");
                 String result = RequestUtils.post(FinalUtil.url, str, header );
@@ -154,10 +154,11 @@ public class SelectQuartzAllUserInfo {
                     }
                     for(AllUserInfo info:allUserInfoList){
                         allUserInfoListByInsert.add(info);
+                        log.info("获取所有工程id成功：========================================================》");
                     }
 
                 }else {
-                    System.out.println("error:  " + result);
+                    log.error("获取所有工程id失败=============================================================》  " + result);
                 }
             }
 
@@ -193,9 +194,11 @@ public class SelectQuartzAllUserInfo {
                         userGroupRoleModel.setUserId(info.getUserid());
                         userGroupRoleModel.insert();
                     }
-                } catch (Exception e) {
+                    log.info("给UserGroupRole表插入所有人员信息成功：========================================================》");
+                }
+                catch (Exception ex) {
                     log.error("fail to set user/group/role: =============================================================>");
-                    log.error("插入所有人员信息出错： =============================================================>",e);
+                    log.error("插入所有人员信息出错： =============================================================>",ex);
                     log.error(new Date());
                 }
 
@@ -232,6 +235,7 @@ public class SelectQuartzAllUserInfo {
                     js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     if (js == null){
                         id = info.insert();
+                        log.info("所有人员表插入所有人员信息成功：========================================================》");
                     }else {
                         allUserInfoByUpdate.where("[eafId]=#{eafId}").update("[eafName]=#{eafName},[eafPhone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
                                 "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
@@ -239,8 +243,9 @@ public class SelectQuartzAllUserInfo {
                                 "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
                                 "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code},[year]=#{year},[month]=#{month}," +
                                 "[Sex]=#{Sex}");
+                        log.info("所有人员表修改人员信息成功：========================================================》");
                     }
-                }catch (Exception e){
+                }catch (Exception ee){
                     if (js == null) {
                         log.error("fail to insert: =============================================================>");
                         log.error(FastJsonUtils.convertObjectToJSON(info));
@@ -250,7 +255,7 @@ public class SelectQuartzAllUserInfo {
                         log.error(FastJsonUtils.convertObjectToJSON(allUserInfoByUpdate));
                     }
                     log.error("--------------------------------------------------------------------------------");
-                    log.error(e);
+                    log.error(ee);
                 }
             }
             timerProfile.setValue(pageIndex);

@@ -56,7 +56,7 @@ public class SelectQuartzProjectInfo {
             params.put("sign",s);
             params.put("data",jsonObject.toJSONString());
             String str = params.toJSONString();
-            System.out.println("params:  " + str);
+            log.info("params:  " + str);
             HashMap<String, String> header = new HashMap<String, String>();
             header.put("Content-Type", "application/json");
             String result = RequestUtils.post(FinalUtil.url, str, header );

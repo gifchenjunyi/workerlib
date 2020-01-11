@@ -35,7 +35,7 @@ public final class PrjectTrigger {
             group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             group.insert();
 
-            //查找工人id
+            //查找管理员id
             RoleModel roleModel= new RoleModel();
             roleModel.setRoleName("管理员");
             RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
