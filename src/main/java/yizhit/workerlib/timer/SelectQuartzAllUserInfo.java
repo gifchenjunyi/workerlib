@@ -257,6 +257,7 @@ public class SelectQuartzAllUserInfo {
                     log.error("--------------------------------------------------------------------------------");
                     log.error(ee);
                 }
+                Runtime.getRuntime().gc();
             }
             timerProfile.setValue(pageIndex);
             timerProfile.where("[key]=#{key}").and("[pid]=#{pid}").update("[value]=#{value}");

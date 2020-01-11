@@ -27,7 +27,7 @@ public class QRCodeUtil {
      * @param height
      * @return
      */
-    public static byte[] creatRrCode(String contents, int width, int height) {
+    public static byte[] creatRrCode(String contents, int width, int height) throws IOException {
         byte[] bytes = null;
         Hashtable hints = new Hashtable();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
@@ -42,10 +42,13 @@ public class QRCodeUtil {
         //转换成png格式的IO流
         try {
             ImageIO.write(image, "png", out);
+            bytes = out.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        bytes = out.toByteArray();
+        finally {
+            out.close();
+        }
 
         return bytes;
     }
