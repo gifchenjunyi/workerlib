@@ -76,7 +76,7 @@ public class SelectQuartzAllUserInfo {
             privilege.setCanUpdate(0);
             privilege.setCanView(1);
             privilege.setCanDownload(1);
-            privilege.setCanPreviewDoc(1);
+            privilege.setCanPreview(1);
             privilege.setCanUpload(1);
             privilege.setCanExport(1);
             privilege.setCanImport(0);
