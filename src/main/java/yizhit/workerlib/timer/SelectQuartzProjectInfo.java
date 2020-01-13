@@ -28,7 +28,7 @@ public class SelectQuartzProjectInfo {
         try {
             StringBuilder sb = new StringBuilder();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("idnum","445122199309195215");
+//          jsonObject.put("idnum","445122199309195215");
             TimerProfile timerProfile = new TimerProfile();
             timerProfile.setKey("project");
             TimerProfile currentTimerProfile = timerProfile.where("[key]=#{key}").first();
@@ -57,6 +57,7 @@ public class SelectQuartzProjectInfo {
             params.put("data",jsonObject.toJSONString());
             String str = params.toJSONString();
             log.info("params:  " + str);
+            log.info(formatDate);
             HashMap<String, String> header = new HashMap<String, String>();
             header.put("Content-Type", "application/json");
             String result = RequestUtils.post(FinalUtil.url, str, header );

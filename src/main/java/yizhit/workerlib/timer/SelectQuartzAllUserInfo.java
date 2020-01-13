@@ -137,7 +137,7 @@ public class SelectQuartzAllUserInfo {
                 params.put("sign",s);
                 params.put("data",jsonObject.toJSONString());
                 String str = params.toJSONString();
-                log.info("params打印:  " + str);
+                log.info("params:  " + str);
                 HashMap<String, String> header = new HashMap<String, String>();
                 header.put("Content-Type", "application/json");
                 String result = RequestUtils.post(FinalUtil.url, str, header );
