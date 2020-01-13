@@ -65,13 +65,12 @@ public final class ArchivesTrigger {
             item.put("cwrUserOut", Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 
             //修改involvedproject
-            lvedproject.setEnd_time(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.setArchivesId((String) item.get("archives_id"));
-            lvedproject.setModifyBy(item.get("modifyBy").toString());
-            lvedproject.setCreateOn(Datetime.format((Date)item.get("createOn"), "yyyy-MM-dd HH:mm:ss"));
+            lvedproject.setProjectid((String)item.get("project_id"));
+            lvedproject.setModifyBy((long)item.get("modifyBy")); 
+            lvedproject.setModifyOn(Datetime.format((Date)item.get("modifyOn"), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.setEnd_time(Datetime.format((Date)item.get("modifyOn"), "yyyy-MM-dd HH:mm:ss"));
-
-            lvedproject.where("[archives_id]=#{archives_id}").update("[modifyOn]=#{modifyOn},[modifyBy]=#{modifyBy},[end_time]=#{end_time}");
+            lvedproject.where("[archives_id]=#{archives_id}")..and("[project_id]=#{project_id}").update("[modifyOn]=#{modifyOn},[modifyBy]=#{modifyBy},[end_time]=#{end_time}");
         }else{
             item.put("leave", 1);
             item.put("cwrUserIn", Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
