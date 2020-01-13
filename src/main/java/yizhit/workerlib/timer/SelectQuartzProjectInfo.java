@@ -158,6 +158,7 @@ public class SelectQuartzProjectInfo {
                 System.out.println("数据插入完成!");
                 timerProfile.setValue(pageIndex);
                 timerProfile.where("[key]=#{key}").update("[value]=#{value}");
+                Runtime.getRuntime().gc();
             }
             else {
                 System.out.println("error:  " + result);
