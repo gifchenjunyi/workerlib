@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
+import entity.tool.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
@@ -122,7 +123,7 @@ public class SelectQuartzArvhivesInfo {
                     projectWorkType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     projectWorkType.setUserPath("0/1");
                     ProjectWorkType jsEafid = projectWorkType.where("[eafId] = #{eafId}").and("[projectId]=#{projectId}").first();
-                    if (jsEafid.getWorkType() != null || !jsEafid.getWorkType().equals("")) {
+                    if (StringUtils.isNotEmpty(jsEafid.getWorkType())) {
                         if (jsEafid == null){
                             projectWorkType.insert();
                         }else{
@@ -138,7 +139,7 @@ public class SelectQuartzArvhivesInfo {
                     workType.setCreateBy("1");
                     workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     WorkType jstype_id  = workType.where("[eafId] = #{easfId}").first();
-                    if (jsEafid.getWorkType() != null || !jsEafid.getWorkType().equals("")) {
+                    if (StringUtils.isNotEmpty(jsEafid.getWorkType())) {
                         if (jstype_id == null) {
                             workType.insert();
                         } else {
