@@ -241,8 +241,7 @@ public class SelectQuartzAllUserInfo {
                                 "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
                                 "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
                                 "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
-                                "[eafStatus]=#{eafStatus},[qr_code]=#{qr_code},[year]=#{year},[month]=#{month}," +
-                                "[Sex]=#{Sex}");
+                                "[eafStatus]=#{eafStatus}");
                         log.info("所有人员表修改人员信息成功：========================================================》");
                     }
                 }catch (Exception ee){

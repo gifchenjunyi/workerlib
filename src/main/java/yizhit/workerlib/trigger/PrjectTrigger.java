@@ -28,7 +28,6 @@ public final class PrjectTrigger {
     public void onInsert(List<Map<String, Object>> list, HttpServletRequest request) throws Exception {
         String groupId = UUID.randomUUID().toString().replace("-", "");
         for(Map item : list) {
-            //插入一条数据到历史记录表
             Group group = new Group();
             group.setGroupId(groupId);
             group.setGroupName((String)item.get("project_name"));
