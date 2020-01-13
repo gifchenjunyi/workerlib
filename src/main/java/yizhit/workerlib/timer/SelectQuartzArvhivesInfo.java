@@ -122,7 +122,7 @@ public class SelectQuartzArvhivesInfo {
                     projectWorkType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     projectWorkType.setUserPath("0/1");
                     ProjectWorkType jsEafid = projectWorkType.where("[eafId] = #{eafId}").and("[projectId]=#{projectId}").first();
-                    if (jsEafid.getWorkType().equals("") || jsEafid.getWorkType() == null){
+                    if (jsEafid.getWorkType() != null || !jsEafid.getWorkType().equals("")) {
                         if (jsEafid == null){
                             projectWorkType.insert();
                         }else{
@@ -138,7 +138,7 @@ public class SelectQuartzArvhivesInfo {
                     workType.setCreateBy("1");
                     workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     WorkType jstype_id  = workType.where("[eafId] = #{easfId}").first();
-                    if (jsEafid.getWorkType().equals("") || jsEafid.getWorkType() == null) {
+                    if (jsEafid.getWorkType() != null || !jsEafid.getWorkType().equals("")) {
                         if (jstype_id == null) {
                             workType.insert();
                         } else {
