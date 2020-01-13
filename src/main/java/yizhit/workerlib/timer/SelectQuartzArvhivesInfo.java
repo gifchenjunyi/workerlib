@@ -122,10 +122,12 @@ public class SelectQuartzArvhivesInfo {
                     projectWorkType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     projectWorkType.setUserPath("0/1");
                     ProjectWorkType jsEafid = projectWorkType.where("[eafId] = #{eafId}").and("[projectId]=#{projectId}").first();
-                    if (jsEafid == null){
-                        projectWorkType.insert();
-                    }else{
-                        projectWorkType.where("[eafId]=#{eafId}").and("[projectId]=#{projectId}").update("[workType]=#{workType}");
+                    if (jsEafid.getWorkType().equals("") || jsEafid.getWorkType() == null){
+                        if (jsEafid == null){
+                            projectWorkType.insert();
+                        }else{
+                            projectWorkType.where("[eafId]=#{eafId}").and("[projectId]=#{projectId}").update("[workType]=#{workType}");
+                        }
                     }
                     log.info("所有工种表导入工种信息成功：========================================================》");
 
@@ -135,11 +137,13 @@ public class SelectQuartzArvhivesInfo {
                     workType.setWorkType(info.getCwrWorkName());
                     workType.setCreateBy("1");
                     workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                    WorkType jstype_id  = workType.where("[eafId] = #{eafId}").first();
-                    if (jstype_id == null){
-                        workType.insert();
-                    }else{
-                        workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
+                    WorkType jstype_id  = workType.where("[eafId] = #{easfId}").first();
+                    if (jsEafid.getWorkType().equals("") || jsEafid.getWorkType() == null) {
+                        if (jstype_id == null) {
+                            workType.insert();
+                        } else {
+                            workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
+                        }
                     }
                     log.info("给工种表导入工种信息成功：========================================================》");
                 }catch(Exception e3){
@@ -149,19 +153,23 @@ public class SelectQuartzArvhivesInfo {
 
             for(ArchivesInfo info:arvhivesInfoListByInsert){
                 try {
-                    //给工种表导入工种信息
-                    WorkType workType = new WorkType();
-                    workType.setEafId(info.getUserid());
-                    workType.setWorkType(info.getCwrWorkName());
-                    workType.setCreateBy("1");
-                    workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                    WorkType jstype_id  = workType.where("[eafId] = #{eafId}").first();
-                    if (jstype_id == null){
-                        workType.insert();
+                    //给历史记录表
+                    InvoLvedproject invoLvedproject = new InvoLvedproject();
+                    invoLvedproject.setArchivesId(info.getUserid());
+                    invoLvedproject.setProjectid(info.getCwrPrjid());
+                    invoLvedproject.setUnitId(info.getCwrComid());
+                    invoLvedproject.setStartTime(info.getCwrUserIn());
+                    invoLvedproject.setEnd_time(info.getCwrUserOut());
+                    invoLvedproject.setCreateBy(1);
+                    invoLvedproject.setCreateOn(Datetime.format(Datetime.now(), "yyyy-MM-dd HH:mm:ss"));
+                    InvoLvedproject js_id  = invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").first();
+                    if (js_id == null){
+                        invoLvedproject.insert();
                     }else{
-                        workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
+                        invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").update("[unit_id] = #{unit_id},[start_time] = #{start_time},[end_time] = #{end_time}," +
+                                                                                                                                         ",[createOn] = #{createOn},[createBy] = #{createBy}");
                     }
-                    log.info("给工种表导入工种信息成功：========================================================》");
+                    log.info("给历史记录表导入信息成功：========================================================》");
                 }catch(Exception e4){
                     log.error(e4);
                 }
