@@ -147,25 +147,25 @@ public class SelectQuartzArvhivesInfo {
                 }
             }
 
-//            for(ArchivesInfo info:arvhivesInfoListByInsert){
-//                try {
-//                    //给工种表导入工种信息
-//                    WorkType workType = new WorkType();
-//                    workType.setEafId(info.getUserid());
-//                    workType.setWorkType(info.getCwrWorkName());
-//                    workType.setCreateBy("1");
-//                    workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-//                    WorkType jstype_id  = workType.where("[eafId] = #{eafId}").first();
-//                    if (jstype_id == null){
-//                        workType.insert();
-//                    }else{
-//                        workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
-//                    }
-//                    log.info("给工种表导入工种信息成功：========================================================》");
-//                }catch(Exception e4){
-//                    log.error(e4);
-//                }
-//            }
+            for(ArchivesInfo info:arvhivesInfoListByInsert){
+                try {
+                    //给工种表导入工种信息
+                    WorkType workType = new WorkType();
+                    workType.setEafId(info.getUserid());
+                    workType.setWorkType(info.getCwrWorkName());
+                    workType.setCreateBy("1");
+                    workType.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                    WorkType jstype_id  = workType.where("[eafId] = #{eafId}").first();
+                    if (jstype_id == null){
+                        workType.insert();
+                    }else{
+                        workType.where("[eafId]=#{eafId}").update("[workType]=#{workType}");
+                    }
+                    log.info("给工种表导入工种信息成功：========================================================》");
+                }catch(Exception e4){
+                    log.error(e4);
+                }
+            }
 
             for(ArchivesInfo info:arvhivesInfoListByInsert){
                 try {
