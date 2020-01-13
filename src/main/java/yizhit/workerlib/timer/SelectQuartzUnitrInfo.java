@@ -20,6 +20,7 @@ import java.util.List;
 
 public class SelectQuartzUnitrInfo {
     private static final Logger log = LogManager.getLogger(SelectQuartzAllUserInfo.class);
+
     public void batchInsertUnitrInfo(String uid){
         // 数据库数据
         System.out.println("查询公司表工作正在进入处理...");
@@ -89,7 +90,7 @@ public class SelectQuartzUnitrInfo {
                 }
             }
             else {
-                System.out.println("error:  " + result);
+                log.error("error: " + result);
             }
         } catch (Exception e) {
             e.printStackTrace();
