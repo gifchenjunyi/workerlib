@@ -67,7 +67,7 @@ public final class ArchivesTrigger {
             //修改involvedproject
             lvedproject.setEnd_time(Datetime.format(Datetime.now(), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.setArchivesId((String) item.get("archives_id"));
-            lvedproject.setModifyBy((long)item.get("modifyBy"));
+            lvedproject.setModifyBy((long)item.get("modifyBy")); 
             lvedproject.setModifyOn(Datetime.format((Date)item.get("modifyOn"), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.where("[archives_id]=#{archives_id}").update("[modifyOn]=#{modifyOn},[modifyBy]=#{modifyBy},[end_time]=#{end_time}");
         }else{
