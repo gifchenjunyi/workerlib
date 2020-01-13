@@ -105,6 +105,31 @@ public class SelectQuartzArvhivesInfo {
                    log.error("获取所有工程id失败：========================================================》",e1);
                }
             }
+
+            for(ArchivesInfo info:arvhivesInfoListByInsert){
+                try {
+                    //给历史记录表
+                    InvoLvedproject invoLvedproject = new InvoLvedproject();
+                    invoLvedproject.setArchivesId(info.getUserid());
+                    invoLvedproject.setProjectid(info.getCwrPrjid());
+                    invoLvedproject.setUnitId(info.getCwrComid());
+                    invoLvedproject.setStartTime(info.getCwrUserIn());
+                    invoLvedproject.setEnd_time(info.getCwrUserOut());
+                    invoLvedproject.setCreateBy(1);
+                    invoLvedproject.setCreateOn(Datetime.format(Datetime.now(), "yyyy-MM-dd HH:mm:ss"));
+                    InvoLvedproject js_id  = invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").first();
+                    if (js_id == null){
+                        invoLvedproject.insert();
+                    }else{
+                        invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").update("[unit_id] = #{unit_id},[start_time] = #{start_time},[end_time] = #{end_time}," +
+                                "[createOn] = #{createOn},[createBy] = #{createBy}");
+                    }
+                    log.info("给历史记录表导入信息成功：========================================================》");
+                }catch(Exception e4){
+                    log.error(e4);
+                }
+            }
+
             for(ArchivesInfo info:arvhivesInfoListByInsert){
                 try {
                     //给所有人员表插入单位ID
@@ -152,29 +177,7 @@ public class SelectQuartzArvhivesInfo {
                 }
             }
 
-            for(ArchivesInfo info:arvhivesInfoListByInsert){
-                try {
-                    //给历史记录表
-                    InvoLvedproject invoLvedproject = new InvoLvedproject();
-                    invoLvedproject.setArchivesId(info.getUserid());
-                    invoLvedproject.setProjectid(info.getCwrPrjid());
-                    invoLvedproject.setUnitId(info.getCwrComid());
-                    invoLvedproject.setStartTime(info.getCwrUserIn());
-                    invoLvedproject.setEnd_time(info.getCwrUserOut());
-                    invoLvedproject.setCreateBy(1);
-                    invoLvedproject.setCreateOn(Datetime.format(Datetime.now(), "yyyy-MM-dd HH:mm:ss"));
-                    InvoLvedproject js_id  = invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").first();
-                    if (js_id == null){
-                        invoLvedproject.insert();
-                    }else{
-                        invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").update("[unit_id] = #{unit_id},[start_time] = #{start_time},[end_time] = #{end_time}," +
-                                                                                                                                         ",[createOn] = #{createOn},[createBy] = #{createBy}");
-                    }
-                    log.info("给历史记录表导入信息成功：========================================================》");
-                }catch(Exception e4){
-                    log.error(e4);
-                }
-            }
+
 
             for(ArchivesInfo info:arvhivesInfoListByInsert){
                 try {
