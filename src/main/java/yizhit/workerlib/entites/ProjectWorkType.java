@@ -1,9 +1,11 @@
 package yizhit.workerlib.entites;
 
 import entity.query.Queryable;
+import entity.query.annotation.DataSource;
 
 import java.io.Serializable;
 
+@DataSource("workerlib2")
 public class ProjectWorkType extends Queryable<ProjectWorkType> implements Serializable {
     private String eafId;       //用户id
     private String projectId;   //项目id

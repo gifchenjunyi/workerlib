@@ -100,7 +100,7 @@ public class SelectQuartzProjectInfo {
                         privilege.setCanUpdate(1);
                         privilege.setCanView(1);
                         privilege.setCanDownload(1);
-                        privilege.setCanPreviewDoc(1);
+                        privilege.setCanPreview(1);
                         privilege.setCanUpload(1);
                         privilege.setCanExport(1);
                         privilege.setCanImport(1);
@@ -158,6 +158,7 @@ public class SelectQuartzProjectInfo {
                 System.out.println("数据插入完成!");
                 timerProfile.setValue(pageIndex);
                 timerProfile.where("[key]=#{key}").update("[value]=#{value}");
+                Runtime.getRuntime().gc();
             }
             else {
                 System.out.println("error:  " + result);

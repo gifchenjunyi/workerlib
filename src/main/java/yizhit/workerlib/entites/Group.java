@@ -11,7 +11,7 @@ public class Group extends Queryable<Group> implements Serializable {
     private String groupName;       //分组名称
     private String description;
     private String userPath;
-    private String modifyTime;      //更新时间
+    private String modifyOn;      //更新时间
     private int modifyBy;           //更新人
     private String createOn;        //创建时间
     private int createBy;           //创建人
@@ -49,12 +49,12 @@ public class Group extends Queryable<Group> implements Serializable {
         this.userPath = userPath;
     }
 
-    public String getModifyTime() {
-        return modifyTime;
+    public String getModifyOn() {
+        return modifyOn;
     }
 
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setModifyOn(String modifyOn) {
+        this.modifyOn = modifyOn;
     }
 
     public int getModifyBy() {
