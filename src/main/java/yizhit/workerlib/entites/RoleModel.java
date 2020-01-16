@@ -32,13 +32,13 @@ public class RoleModel extends Queryable<RoleModel> {
     private Date createOn;
 
     @Fieldname("${entity.table.reservedField.createBy:createBy}")
-    private Long createBy;
+    private Integer createBy;
 
     @Fieldname("${entity.table.reservedField.modifyOn:modifyOn}")
     private Date modifyOn;
 
     @Fieldname("${entity.table.reservedField.modifyBy:modifyBy}")
-    private Long modifyBy;
+    private Integer modifyBy;
 
     public String getPath() {
         return path;
@@ -56,11 +56,11 @@ public class RoleModel extends Queryable<RoleModel> {
         this.createOn = createOn;
     }
 
-    public Long getCreateBy() {
+    public Integer getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Long createBy) {
+    public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
     }
 
@@ -72,11 +72,11 @@ public class RoleModel extends Queryable<RoleModel> {
         this.modifyOn = modifyOn;
     }
 
-    public Long getModifyBy() {
+    public Integer getModifyBy() {
         return modifyBy;
     }
 
-    public void setModifyBy(Long modifyBy) {
+    public void setModifyBy(Integer modifyBy) {
         this.modifyBy = modifyBy;
     }
 

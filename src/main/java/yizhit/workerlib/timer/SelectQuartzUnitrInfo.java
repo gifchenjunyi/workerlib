@@ -8,6 +8,7 @@ import entity.tool.util.RequestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
+import org.springframework.beans.factory.annotation.Value;
 import yizhit.workerlib.entites.TimerProfile;
 import yizhit.workerlib.entites.UnitrInfo;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
@@ -21,7 +22,15 @@ import java.util.List;
 public class SelectQuartzUnitrInfo {
     private static final Logger log = LogManager.getLogger(SelectQuartzAllUserInfo.class);
 
+    @Value("${enableTasks:false}")
+    private Boolean enableTasks;
+
     public void batchInsertUnitrInfo(String uid){
+
+        if(!enableTasks) {
+            return;
+        }
+
         // 数据库数据
         System.out.println("查询公司表工作正在进入处理...");
         JSONObject params = new JSONObject();

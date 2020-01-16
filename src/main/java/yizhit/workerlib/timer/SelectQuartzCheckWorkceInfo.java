@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
 import org.quartz.DisallowConcurrentExecution;
+import org.springframework.beans.factory.annotation.Value;
 import yizhit.workerlib.entites.AllUserInfo;
 import yizhit.workerlib.entites.CheckWorkceInfo;
 import yizhit.workerlib.entites.ProjectInfo;
@@ -20,7 +21,17 @@ import java.util.List;
 
 @DisallowConcurrentExecution
 public class SelectQuartzCheckWorkceInfo {
+
+    @Value("${enableTasks:false}")
+    private Boolean enableTasks;
+
+
     public void batchInsertCheckWorkceInfo() {
+
+        if(!enableTasks) {
+            return;
+        }
+
         // 数据库数据
         System.out.println("查询考勤表数据正在进入处理...");
         JSONObject params = new JSONObject();
@@ -127,6 +138,7 @@ public class SelectQuartzCheckWorkceInfo {
                 } else {
                     System.out.println("error:  " + result);
                 }
+                Thread.sleep(1000);
                 Runtime.getRuntime().gc();
             }
         } catch (Exception e) {
