@@ -8,6 +8,7 @@ import entity.tool.util.RequestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
+import org.springframework.beans.factory.annotation.Value;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
@@ -19,9 +20,17 @@ public class SelectQuartzProjectInfo {
 
     private static final Logger log = LogManager.getLogger(SelectQuartzProjectInfo.class);
 
+    @Value("${enableTasks:false}")
+    private Boolean enableTasks;
+
     public  void batchInsertProjectInfo(){
+
+        if(!enableTasks) {
+            return;
+        }
+
         // 数据库数据
-        log.info("查询所有工程工作正在进入处理...");
+        log.info("查询所有项目工作正在进入处理...");
         JSONObject params = new JSONObject();
         JSONArray array = null;
         int pageIndex = 0;
@@ -143,17 +152,18 @@ public class SelectQuartzProjectInfo {
                     }
                     catch (Exception e) {
                         if (js == null) {
-                            log.error("fail to insert: =============================================================>");
+                            log.error("项目数据插入失败: =============================================================>");
                             log.error(FastJsonUtils.convertObjectToJSON(item));
                         }
                         else {
-                            log.error("fail to update: ------------------------------------------------------------>");
+                            log.error("项目数据更新失败: ------------------------------------------------------------>");
                             log.error(FastJsonUtils.convertObjectToJSON(projectInfo));
                         }
 
                         log.error("--------------------------------------------------------------------------------");
                         log.error(e);
                     }
+                    Thread.sleep(1000);
                 }
                 System.out.println("数据插入完成!");
                 timerProfile.setValue(pageIndex);

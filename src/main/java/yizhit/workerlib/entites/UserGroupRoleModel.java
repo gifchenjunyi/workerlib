@@ -24,10 +24,7 @@ public class UserGroupRoleModel extends Queryable<UserGroupRoleModel> {
     private String userGroupRoleId;
 
     @Fieldname("userId")
-    private Long userId;
-
-    @Fieldname("groupId")
-    private UUID groupId;
+    private Integer userId;
 
     @Fieldname("roleId")
     private UUID roleId;
@@ -39,13 +36,7 @@ public class UserGroupRoleModel extends Queryable<UserGroupRoleModel> {
     private Date createOn;
 
     @Fieldname("${entity.table.reservedField.createBy:createBy}")
-    private Long createBy;
-
-    @Fieldname("${entity.table.reservedField.modifyOn:modifyOn}")
-    private Date modifyOn;
-
-    @Fieldname("${entity.table.reservedField.modifyBy:modifyBy}")
-    private Long modifyBy;
+    private Integer createBy;
 
     public Date getCreateOn() {
         return createOn;
@@ -55,28 +46,12 @@ public class UserGroupRoleModel extends Queryable<UserGroupRoleModel> {
         this.createOn = createOn;
     }
 
-    public Long getCreateBy() {
+    public Integer getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Long createBy) {
+    public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
-    }
-
-    public Date getModifyOn() {
-        return modifyOn;
-    }
-
-    public void setModifyOn(Date modifyOn) {
-        this.modifyOn = modifyOn;
-    }
-
-    public Long getModifyBy() {
-        return modifyBy;
-    }
-
-    public void setModifyBy(Long modifyBy) {
-        this.modifyBy = modifyBy;
     }
 
     public String getUserGroupRoleId() {
@@ -85,14 +60,6 @@ public class UserGroupRoleModel extends Queryable<UserGroupRoleModel> {
 
     public void setUserGroupRoleId(String userGroupRoleId) {
         this.userGroupRoleId = userGroupRoleId;
-    }
-
-    public UUID getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
     }
 
     public UUID getRoleId() {
@@ -111,11 +78,11 @@ public class UserGroupRoleModel extends Queryable<UserGroupRoleModel> {
         this.path = path;
     }
 
-    public long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 }

@@ -2,20 +2,17 @@ package yizhit.workerlib.timer;
 
 import ccait.ccweb.utils.EncryptionUtil;
 import ccait.ccweb.utils.FastJsonUtils;
-import ccait.ccweb.utils.UploadUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import entity.query.Datetime;
 import entity.tool.util.RequestUtils;
 import entity.tool.util.StringUtils;
-import entity.tool.util.ThreadUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.springframework.beans.factory.annotation.Value;
 import yizhit.workerlib.entites.*;
 import yizhit.workerlib.interfaceuilt.FinalUtil;
-import yizhit.workerlib.interfaceuilt.QRCodeUtil;
 import yizhit.workerlib.interfaceuilt.SHA256;
 import yizhit.workerlib.trigger.AllUserTrigger;
 
@@ -47,10 +44,17 @@ public class SelectQuartzAllUserInfo {
     @Value("${qrcode.server}")      //IP
     private String server ;
 
+    @Value("${enableTasks:false}")
+    private Boolean enableTasks;
 
     public void batchInsertArchivesInfo(){
+
+        if(!enableTasks) {
+            return;
+        }
+
         // 数据库数据
-        System.out.println("查询所有人员工作正在进入处理...");
+        System.out.println("查询项目下人员工作正在进入处理...");
         JSONObject params = new JSONObject();
         JSONArray array = null;
         int pageIndex = 0;
@@ -154,7 +158,6 @@ public class SelectQuartzAllUserInfo {
                     }
                     for(AllUserInfo info:allUserInfoList){
                         allUserInfoListByInsert.add(info);
-                        log.info("获取所有工程id成功：========================================================》");
                     }
 
                 }else {
@@ -167,34 +170,44 @@ public class SelectQuartzAllUserInfo {
                     //给user表插入所有人员信息
                     UserModel userModel = new UserModel();
                     userModel.setUsername(info.getCwrIdnum());
-                    String passWord = info.getCwrIdnum();
-                    if (info.getCwrIdnum().length() < 6) {
+                    String passWord = "";
+                    if (StringUtils.isEmpty(info.getCwrIdnum()) || info.getCwrIdnum().length() < 6) {
                         passWord = "123456";
                     } else {
                         passWord = info.getCwrIdnum().substring(info.getCwrIdnum().length() - 6);
                     }
                     userModel.setPassword(EncryptionUtil.md5(passWord, md5PublicKey, encoding));
                     userModel.setPath("0/1");
-                    userModel.setCreateBy(Long.valueOf(1));
+                    userModel.setCreateBy(Integer.valueOf(1));
                     userModel.setCreateOn(new Date());
+                    js = new AllUserInfo().where(String.format("[eafId]='%s'", info.getEafId())).first();
 
-                    if (userModel.where("[username]=#{username}").exist()) {
-                        userModel.where("[username]=#{username}").update("[username]=#{username}");
-                    } else {
-                        //给UserGroupRole表插入所有人员信息
-                        UserGroupRoleModel userGroupRoleModel = new UserGroupRoleModel();
-                        String userGroupRoleId = UUID.randomUUID().toString().replace("-", "");
-                        userGroupRoleModel.setUserGroupRoleId(userGroupRoleId);
-                        userGroupRoleModel.setRoleId(roleId.getRoleId());
-                        userGroupRoleModel.setPath("0/1");
-                        userGroupRoleModel.setCreateOn(new Date());
-                        userGroupRoleModel.setCreateBy(Long.valueOf(1));
-
+                    UserModel currentUser = userModel.where("[username]=#{username}").first();
+                    if (currentUser == null) {
                         info = AllUserTrigger.genQrCode(FastJsonUtils.convert(info, Map.class), userModel,md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height,server,false);
-                        userGroupRoleModel.setUserId(info.getUserid());
+                    }
+
+                    else {
+                        if(js == null) {
+                            AllUserInfo temp = AllUserTrigger.genQrCode(FastJsonUtils.convert(info, Map.class), userModel, md5PublicKey, aesPublicKey, qrCodePath, encoding, width, height, server, false);
+                            info.setQrCode(temp.getQrCode());
+                        }
+                        info.setUserid(currentUser.getId());
+                    }
+
+                    //给UserGroupRole表插入所有人员信息
+                    UserGroupRoleModel userGroupRoleModel = new UserGroupRoleModel();
+                    String userGroupRoleId = UUID.randomUUID().toString().replace("-", "");
+                    userGroupRoleModel.setUserGroupRoleId(userGroupRoleId);
+                    userGroupRoleModel.setRoleId(roleId.getRoleId());
+                    userGroupRoleModel.setPath("0/1");
+                    userGroupRoleModel.setCreateOn(new Date());
+                    userGroupRoleModel.setCreateBy(Integer.valueOf(1));
+                    userGroupRoleModel.setUserId(info.getUserid());
+                    if("工人".equals(roleId.getRoleName()) && !userGroupRoleModel.where("[userId]=#{userId}")
+                            .and("[roleId]=#{roleId}").exist()) {
                         userGroupRoleModel.insert();
                     }
-                    log.info("给UserGroupRole表插入所有人员信息成功：========================================================》");
                 }
                 catch (Exception ex) {
                     log.error("fail to set user/group/role: =============================================================>");
@@ -223,40 +236,42 @@ public class SelectQuartzAllUserInfo {
                     if(StringUtils.isNotEmpty(info.getCwrIdnum())) {
                         allUserInfoByUpdate.setYear(Integer.parseInt(info.getCwrIdnum().substring(6, 10)));
                         allUserInfoByUpdate.setMonth(Integer.parseInt(info.getCwrIdnum().substring(10,12)));
+                        info.setYear(allUserInfoByUpdate.getYear());
+                        info.setMonth(allUserInfoByUpdate.getMonth());
                         int Sex = Integer.parseInt(info.getCwrIdnum().substring(16,17));
-                        if (Sex / 2 != 0){
+                        if (Sex % 2 == 0){
                             allUserInfoByUpdate.setSex(2);
+                            info.setSex(2);
                         }else {
                             allUserInfoByUpdate.setSex(1);
+                            info.setSex(1);
                         }
                     }
 
                     Integer id = null;
-                    js = allUserInfoByUpdate.where("[eafId]=#{eafId}").first();
                     if (js == null){
                         id = info.insert();
-                        log.info("所有人员表插入所有人员信息成功：========================================================》");
                     }else {
                         allUserInfoByUpdate.where("[eafId]=#{eafId}").update("[eafName]=#{eafName},[eafPhone]=#{eafPhone},[cwrIdnumType]=#{cwrIdnumType}," +
                                 "[cwrIdnum]=#{cwrIdnum},[id_card_front]=#{cwrIdphotoScan},[cwrPhoto]=#{cwrPhoto}," +
                                 "[eafCreatetime]=#{eafCreatetime},[eafModifytime]=#{eafModifytime},[cwrIdaddr]=#{cwrIdaddr}," +
                                 "[eafCreator]=#{eafCreator},[eafModifier]=#{eafModifier},[cwrStatus]=#{cwrStatus}," +
                                 "[eafStatus]=#{eafStatus}");
-                        log.info("所有人员表修改人员信息成功：========================================================》");
                     }
                 }catch (Exception ee){
                     if (js == null) {
-                        log.error("fail to insert: =============================================================>");
+                        log.error("项目下人员数据插入失败: =============================================================>");
                         log.error(FastJsonUtils.convertObjectToJSON(info));
                     }
                     else {
-                        log.error("fail to update: ------------------------------------------------------------>");
+                        log.error("项目下人员数据更新失败: ------------------------------------------------------------>");
                         log.error(FastJsonUtils.convertObjectToJSON(allUserInfoByUpdate));
                     }
                     log.error("--------------------------------------------------------------------------------");
                     log.error(ee);
                 }
                 Runtime.getRuntime().gc();
+                Thread.sleep(1000);
             }
             timerProfile.setValue(pageIndex);
             timerProfile.where("[key]=#{key}").and("[pid]=#{pid}").update("[value]=#{value}");
@@ -264,8 +279,6 @@ public class SelectQuartzAllUserInfo {
         } catch (Exception e) {
             log.error(e);
         }
-
-
     }
 
 }

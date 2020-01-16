@@ -16,10 +16,10 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
    private String start_time;       //开始时间
    private String end_time ;        //结束时间
    private String userPath;         //用户地址
-   private long modifyBy ;        //更新人
+   private Integer modifyBy ;        //更新人
    private String modifyOn ;      //更新时间
    private String createOn ;          //创建时间
-   private long createBy ;        //创建人
+   private Integer createBy ;        //创建人
 
     public int getId() {
         return id;
@@ -41,7 +41,7 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
         return project_id;
     }
 
-    public void setProjectid(String project_id) {
+    public void setProjectId(String project_id) {
         this.project_id = project_id;
     }
 
@@ -77,11 +77,11 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
         this.userPath = userPath;
     }
 
-    public long getModifyBy() {
+    public Integer getModifyBy() {
         return modifyBy;
     }
 
-    public void setModifyBy(long modifyBy) {
+    public void setModifyBy(Integer modifyBy) {
         this.modifyBy = modifyBy;
     }
 
@@ -101,11 +101,11 @@ public class InvoLvedproject extends Queryable<InvoLvedproject> {
         this.createOn = createOn;
     }
 
-    public long getCreateBy() {
+    public Integer getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(long createBy) {
+    public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
     }
 }

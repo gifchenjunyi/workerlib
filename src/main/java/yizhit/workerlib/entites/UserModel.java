@@ -13,7 +13,7 @@ public class UserModel extends Queryable<UserModel> {
 
     @AutoIncrement
     @Fieldname("id")
-    private Long id;
+    private Integer id;
 
     @PrimaryKey
     @Fieldname("username")
@@ -29,13 +29,13 @@ public class UserModel extends Queryable<UserModel> {
     private Date createOn;
 
     @Fieldname("${entity.table.reservedField.createBy:createBy}")
-    private Long createBy;
+    private Integer createBy;
 
     @Fieldname("${entity.table.reservedField.modifyOn:modifyOn}")
     private Date modifyOn;
 
     @Fieldname("${entity.table.reservedField.modifyBy:modifyBy}")
-    private Long modifyBy;
+    private Integer modifyBy;
 
     @Fieldname("status")
     private Integer status;
@@ -48,11 +48,11 @@ public class UserModel extends Queryable<UserModel> {
         this.createOn = createOn;
     }
 
-    public Long getCreateBy() {
+    public Integer getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Long createBy) {
+    public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
     }
 
@@ -64,11 +64,11 @@ public class UserModel extends Queryable<UserModel> {
         this.modifyOn = modifyOn;
     }
 
-    public Long getModifyBy() {
+    public Integer getModifyBy() {
         return modifyBy;
     }
 
-    public void setModifyBy(Long modifyBy) {
+    public void setModifyBy(Integer modifyBy) {
         this.modifyBy = modifyBy;
     }
 
@@ -79,11 +79,11 @@ public class UserModel extends Queryable<UserModel> {
     @Exclude
     private List<UserGroupRoleModel> userGroupRoleModels;
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

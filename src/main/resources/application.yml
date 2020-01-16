@@ -37,8 +37,8 @@ entity:
       AES: #AES加密配置
         publicKey: ccait@2019 #AES加密公钥
     admin:
-      username: admin
-      password: admin
+      username: administrator
+      password: hujiang168
 
   validation:
     email: ^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$
@@ -253,6 +253,8 @@ websocket:
   enable: false
 
 qrcode:
-  width: 200
-  height: 200
-  server: http://localhost:8000/#
+  width: 80
+  height: 80
+  server: http://39.108.103.150:8000/#
+
+enableTasks: true

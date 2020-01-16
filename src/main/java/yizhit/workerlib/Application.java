@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import yizhit.workerlib.timer.SelectQuartzArvhivesInfo;
@@ -24,7 +26,7 @@ import java.net.MalformedURLException;
 @EnableEurekaClient
 @SpringBootApplication(scanBasePackages = {"ccait.ccweb", "yizhit.workerlib"},
         exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
     private static final Logger log = LogManager.getLogger( Application.class );
     private static boolean uat = false;
@@ -52,5 +54,11 @@ public class Application {
     private static void setUat( boolean isUat )
     {
         Application.uat = isUat;
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 注意这里要指向原先用main方法执行的Application启动类
+        return builder.sources(Application.class);
     }
 }

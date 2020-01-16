@@ -33,11 +33,11 @@ public final class ArchivesTrigger {
             //插入一条数据到历史记录表
             InvoLvedproject lvedproject = new InvoLvedproject();
             lvedproject.setArchivesId((String) item.get("archives_id"));
-            lvedproject.setProjectid((String) item.get("project_id"));
+            lvedproject.setProjectId((String) item.get("project_id"));
             lvedproject.setUnitId((String)item.get("unit_id"));
             lvedproject.setUserPath((String)item.get("userPath"));
             lvedproject.setStartTime(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            lvedproject.setCreateBy((long)item.get("createBy"));
+            lvedproject.setCreateBy((Integer)item.get("createBy"));
             lvedproject.setCreateOn(Datetime.format((Date)item.get("createOn"), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.insert();
 
@@ -66,22 +66,22 @@ public final class ArchivesTrigger {
 
             //修改involvedproject
             lvedproject.setArchivesId((String) item.get("archives_id"));
-            lvedproject.setProjectid((String)item.get("project_id"));
-            lvedproject.setModifyBy((long)item.get("modifyBy")); 
+            lvedproject.setProjectId((String)item.get("project_id"));
+            lvedproject.setModifyBy((Integer)item.get("modifyBy"));
             lvedproject.setModifyOn(Datetime.format((Date)item.get("modifyOn"), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.setEnd_time(Datetime.format((Date)item.get("modifyOn"), "yyyy-MM-dd HH:mm:ss"));
-            lvedproject.where("[archives_id]=#{archives_id}")..and("[project_id]=#{project_id}").update("[modifyOn]=#{modifyOn},[modifyBy]=#{modifyBy},[end_time]=#{end_time}");
+            lvedproject.where("[archives_id]=#{archives_id}").and("[project_id]=#{project_id}").update("[modifyOn]=#{modifyOn},[modifyBy]=#{modifyBy},[end_time]=#{end_time}");
         }else{
             item.put("leave", 1);
             item.put("cwrUserIn", Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             item.put("cwrUserOut", null);
             //插入一条数据到历史记录表
             lvedproject.setArchivesId((String) item.get("archives_id"));
-            lvedproject.setProjectid((String) item.get("project_id"));
+            lvedproject.setProjectId((String) item.get("project_id"));
             lvedproject.setUnitId((String) item.get("unit_id"));
             lvedproject.setUserPath((String) item.get("userPath"));
             lvedproject.setStartTime(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            lvedproject.setCreateBy((long)item.get("createBy"));
+            lvedproject.setCreateBy((Integer)item.get("createBy"));
             lvedproject.setCreateOn(Datetime.format((Date)item.get("createOn"), "yyyy-MM-dd HH:mm:ss"));
             lvedproject.insert();
 

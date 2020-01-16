@@ -54,7 +54,7 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
     private String qr_code;
 
     @Exclude
-    private long userid;
+    private Integer userid;
 
     public int getYear() {
         return year;
@@ -200,11 +200,11 @@ public class AllUserInfo extends Queryable<AllUserInfo> implements Serializable 
         this.eafStatus = eafStatus;
     }
 
-    public long getUserid() {
+    public Integer getUserid() {
         return userid;
     }
 
-    public void setUserid(long userid) {
+    public void setUserid(Integer userid) {
         this.userid = userid;
     }
 
