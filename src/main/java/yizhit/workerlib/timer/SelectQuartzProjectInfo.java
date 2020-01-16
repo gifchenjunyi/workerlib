@@ -74,105 +74,116 @@ public class SelectQuartzProjectInfo {
 
             List<ProjectInfo> list = new ArrayList<ProjectInfo>();
             // 数据获取正确
-            if(json.containsKey("code") && json.get("code").equals("0")){
+            if(json.containsKey("code") && json.get("code").equals("0")) {
                 array = json.getJSONObject("data").getJSONArray("list");
                 list = (List<ProjectInfo>) FastJsonUtils.toList(array.toJSONString(), ProjectInfo.class);
-                if (list.size() == 500){
+                if (list.size() == 500) {
                     pageIndex++;
                 }
-                for(ProjectInfo item : list) {
+            }
 
-                    ProjectInfo js = null;
-                    ProjectInfo projectInfo = null;
-                    try {
-                        //获取Group表的id
-                        String groupId = UUID.randomUUID().toString().replace("-", "");
-                        Group group = new Group();
-                        group.setGroupId(groupId);
-                        group.setUserPath("0/1");
-                        group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                        group.setGroupName(item.getCwrPrjName());
-
-                        //查找管理员id
-                        RoleModel roleModel= new RoleModel();
-                        roleModel.setRoleName("管理员");
-                        RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
-
-                        //获取Privilege表的id
-                        String privilegeId = UUID.randomUUID().toString().replace("-", "");
-                        Privilege privilege = new Privilege();
-                        privilege.setPrivilegeId(privilegeId);
-                        privilege.setGroupId(groupId);
-                        privilege.setRoleId(roleId.getRoleId());
-                        privilege.setCanAdd(1);
-                        privilege.setCanDelete(1);
-                        privilege.setCanUpdate(1);
-                        privilege.setCanView(1);
-                        privilege.setCanDownload(1);
-                        privilege.setCanPreview(1);
-                        privilege.setCanUpload(1);
-                        privilege.setCanExport(1);
-                        privilege.setCanImport(1);
-                        privilege.setCanDecrypt(1);
-                        privilege.setCanList(1);
-                        privilege.setCanQuery(1);
-                        privilege.setScope(4);
-                        privilege.setUserPath("0/1");
-                        privilege.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-
-                        projectInfo = new ProjectInfo();
-                        projectInfo.setEafId(item.getEafId());
-                        //查找是否有相同的公司
-                        js = projectInfo.where("[project_id]=#{eafId}").first();
-                        if (js == null) {
-                            Integer i = item.insert();
-                            group.insert();
-                            privilege.insert();
-                        } else {
-                            projectInfo.setEafModifytime(item.getEafModifytime());
-                            projectInfo.setEafCreatetime(item.getEafCreatetime());
-                            projectInfo.setCwrPrjAddr(item.getCwrPrjAddr());
-                            projectInfo.setCwrPrjName(item.getCwrPrjName());
-                            projectInfo.setCwrPrjJian(item.getCwrPrjJian());
-                            projectInfo.setCwrPrjStatus(item.getCwrPrjStatus());
-                            projectInfo.setCwrPrjType(item.getCwrPrjType());
-                            projectInfo.setCwrPrjCode(item.getCwrPrjCode());
-                            projectInfo.setCwrEndDate(item.getCwrEndDate());
-                            projectInfo.setCwrStartDate(item.getCwrStartDate());
-                            projectInfo.setCwrJsUnit(item.getCwrJsUnit());
-                            projectInfo.setCwrSgUnit(item.getCwrSgUnit());
-                            projectInfo.setCwrControlUnit(item.getCwrControlUnit());
-                            projectInfo.where("[project_id]=#{eafId}").update("[modifyOn]=#{eafModifytime},[createOn]=#{eafCreatetime},[project_address]=#{cwrPrjAddr}," +
-                                    "[project_name]=#{cwrPrjName},[project_brief]=#{cwrPrjJian},[status]=#{cwrPrjStatus}," +
-                                    "[cwrPrjType]=#{cwrPrjType},[cwrPrjCode]=#{cwrPrjCode},[end_time]=#{cwrEndDate}," +
-                                    "[start_time]=#{cwrStartDate},[construction]=#{cwrJsUnit},[organization]=#{cwrSgUnit}," +
-                                    "[supervising]=#{cwrControlUnit}");
-                            group.where("[groupName]=#{groupName}").update("[groupName]=#{groupName}");
-                        }
+            for(ProjectInfo item : list){
+                String groupId = UUID.randomUUID().toString().replace("-", "");
+                try {
+                    //获取Group表的id
+                    Group group = new Group();
+                    group.setGroupId(groupId);
+                    group.setUserPath("0/1");
+                    group.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                    group.setGroupName(item.getCwrPrjName());
+                    Group groupjs = group.where("[groupName]=#{groupName}").first();
+                    if (groupjs == null){
+                        group.insert();
+                    }else{
+                        group.where("[groupName]=#{groupName}").update("[groupName]=#{groupName}");
                     }
-                    catch (Exception e) {
-                        if (js == null) {
-                            log.error("项目数据插入失败: =============================================================>");
-                            log.error(FastJsonUtils.convertObjectToJSON(item));
-                        }
-                        else {
-                            log.error("项目数据更新失败: ------------------------------------------------------------>");
-                            log.error(FastJsonUtils.convertObjectToJSON(projectInfo));
-                        }
 
-                        log.error("--------------------------------------------------------------------------------");
-                        log.error(e);
+                    //查找管理员id
+                    RoleModel roleModel= new RoleModel();
+                    roleModel.setRoleName("管理员");
+                    RoleModel roleId = roleModel.where("[roleName]=#{roleName}").first();
+
+                    //获取Privilege表的id
+                    String privilegeId = UUID.randomUUID().toString().replace("-", "");
+                    Privilege privilege = new Privilege();
+                    privilege.setPrivilegeId(privilegeId);
+                    privilege.setGroupId(groupId);
+                    privilege.setRoleId(roleId.getRoleId());
+                    privilege.setCanAdd(1);
+                    privilege.setCanDelete(1);
+                    privilege.setCanUpdate(1);
+                    privilege.setCanView(1);
+                    privilege.setCanDownload(1);
+                    privilege.setCanPreview(1);
+                    privilege.setCanUpload(1);
+                    privilege.setCanExport(1);
+                    privilege.setCanImport(1);
+                    privilege.setCanDecrypt(1);
+                    privilege.setCanList(1);
+                    privilege.setCanQuery(1);
+                    privilege.setScope(4);
+                    privilege.setUserPath("0/1");
+                    privilege.setCreateOn(Datetime.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                    Privilege privilegejs = privilege.where("[groupId]=#{groupId}").and("[roleId]=#{roleId}").first();
+                    if (privilegejs == null){
+                        privilege.insert();
                     }
-                    Thread.sleep(1000);
+
+                }catch(Exception e2){
+                    log.error(FastJsonUtils.convertObjectToJSON(item));
+                    log.error(e2);
                 }
-                System.out.println("数据插入完成!");
-                timerProfile.setValue(pageIndex);
-                timerProfile.where("[key]=#{key}").update("[value]=#{value}");
-                Runtime.getRuntime().gc();
             }
-            else {
-                System.out.println("error:  " + result);
+
+            for(ProjectInfo item : list) {
+                ProjectInfo js = null;
+                ProjectInfo projectInfo = null;
+                try {
+                    projectInfo = new ProjectInfo();
+                    projectInfo.setEafId(item.getEafId());
+                    //查找是否有相同的公司
+                    js = projectInfo.where("[project_id]=#{project_id}").first();
+                    if (js == null) {
+                        Integer i = item.insert();
+                    } else {
+                        projectInfo.setEafModifytime(item.getEafModifytime());
+                        projectInfo.setEafCreatetime(item.getEafCreatetime());
+                        projectInfo.setCwrPrjAddr(item.getCwrPrjAddr());
+                        projectInfo.setCwrPrjName(item.getCwrPrjName());
+                        projectInfo.setCwrPrjJian(item.getCwrPrjJian());
+                        projectInfo.setCwrPrjStatus(item.getCwrPrjStatus());
+                        projectInfo.setCwrPrjType(item.getCwrPrjType());
+                        projectInfo.setCwrPrjCode(item.getCwrPrjCode());
+                        projectInfo.setCwrEndDate(item.getCwrEndDate());
+                        projectInfo.setCwrStartDate(item.getCwrStartDate());
+                        projectInfo.setCwrJsUnit(item.getCwrJsUnit());
+                        projectInfo.setCwrSgUnit(item.getCwrSgUnit());
+                        projectInfo.setCwrControlUnit(item.getCwrControlUnit());
+                        projectInfo.where("[project_id]=#{eafId}").update("[modifyOn]=#{eafModifytime},[createOn]=#{eafCreatetime},[project_address]=#{cwrPrjAddr}," +
+                                "[project_name]=#{cwrPrjName},[project_brief]=#{cwrPrjJian},[status]=#{cwrPrjStatus}," +
+                                "[cwrPrjType]=#{cwrPrjType},[cwrPrjCode]=#{cwrPrjCode},[end_time]=#{cwrEndDate}," +
+                                "[start_time]=#{cwrStartDate},[construction]=#{cwrJsUnit},[organization]=#{cwrSgUnit}," +
+                                "[supervising]=#{cwrControlUnit}");
+                    }
+                }
+                catch (Exception e) {
+                    if (js == null) {
+                        log.error("项目数据插入失败: =============================================================>");
+                        log.error(FastJsonUtils.convertObjectToJSON(item));
+                    }
+                    else {
+                        log.error("项目数据更新失败: ------------------------------------------------------------>");
+                        log.error(FastJsonUtils.convertObjectToJSON(projectInfo));
+                    }
+                    log.error("--------------------------------------------------------------------------------");
+                    log.error(e);
+                }
+                Thread.sleep(1000);
             }
+            System.out.println("数据插入完成!");
+            timerProfile.setValue(pageIndex);
+            timerProfile.where("[key]=#{key}").update("[value]=#{value}");
+            Runtime.getRuntime().gc();
         } catch (Exception e) {
             e.printStackTrace();
         }

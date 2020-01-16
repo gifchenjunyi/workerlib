@@ -267,9 +267,7 @@ public class SelectQuartzArvhivesInfo {
                 invoLvedproject.where("[archives_id] = #{archives_id}").and("[project_id] = #{project_id}").update("[unit_id] = #{unit_id},[start_time] = #{start_time},[end_time] = #{end_time}," +
                         "[createOn] = #{createOn},[createBy] = #{createBy}");
             }
-        }
-
-        catch(Exception e) {
+        } catch(Exception e) {
             log.error(e);
         }
     }
